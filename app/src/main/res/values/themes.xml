@@ -2,8 +2,11 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Parksharenew" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorPrimary">@color/lightBlue</item>
+        <item name="fontFamily">monospace</item>
     </style>
+
 
     <style name="Theme.Parksharenew" parent="Base.Theme.Parksharenew" />
 </resources>
