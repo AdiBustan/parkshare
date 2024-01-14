@@ -40,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".activites.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.CALL_BUTTON" />

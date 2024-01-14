@@ -1,9 +1,10 @@
-package com.example.parkshare_new
+package com.example.parkshare_new.activites
 
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.example.parkshare_new.R
 
 public class LoginActivity : AppCompatActivity(){
     var emailField: EditText? = null

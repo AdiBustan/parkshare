@@ -10,8 +10,6 @@ import android.widget.Button
 import android.widget.Toast
 import com.example.parkshare_new.R
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,9 +19,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val signinButton : Button = findViewById(R.id.SigninButton)
+        val signingButton : Button = findViewById(R.id.SigninButton)
+        val loginButton : Button = findViewById(R.id.alreadySignButton)
 
-        signinButton.setOnClickListener(::onSigninBottonClicked) }
+        signingButton.setOnClickListener(::onSigninBottonClicked)
+        loginButton.setOnClickListener(::onLoginPageButtonClicked)
+    }
 
     //TODO: remove comment - this func initiate the app with already signin user
 //    public override fun onStart() {
@@ -52,6 +53,11 @@ class MainActivity : AppCompatActivity() {
 
     fun onSigninBottonClicked(view: View) {
         val intent = Intent(this, SigninActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun onLoginPageButtonClicked(view: View) {
+        val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }
 }
