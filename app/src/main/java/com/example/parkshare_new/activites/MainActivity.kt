@@ -9,6 +9,8 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import com.example.parkshare_new.R
+import com.example.parkshare_new.firebase.EmailPasswordFragment
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -16,25 +18,32 @@ import com.google.firebase.ktx.Firebase
 class MainActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
-
+    //abstract var passwordFragment :EmailPasswordFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(this)
         setContentView(R.layout.activity_main)
 
         val signinButton : Button = findViewById(R.id.SigninButton)
 
         signinButton.setOnClickListener(::onSigninBottonClicked) }
 
-    //TODO: remove comment - this func initiate the app with already signin user
+    //TODO: remove comment in case EmailPasswordFragment.kt is working
 //    public override fun onStart() {
 //        super.onStart()
-//        auth = Firebase.auth
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//        val currentUser = auth.currentUser
+//        passwordFragment.outoConnect()
+//    }
+
+    public override fun onStart() {
+        super.onStart()
+        auth = Firebase.auth
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.currentUser
+        //    TODO: remove comment - this func initiate the app with already signin user
 //        if (currentUser != null) {
 //            reload()
 //        }
-//    }
+    }
 
     private fun reload() {
         auth.currentUser!!.reload().addOnCompleteListener { task ->
@@ -50,7 +59,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun onSigninBottonClicked(view: View) {
+    private fun onSigninBottonClicked(view: View) {
         val intent = Intent(this, SigninActivity::class.java)
         startActivity(intent)
     }
