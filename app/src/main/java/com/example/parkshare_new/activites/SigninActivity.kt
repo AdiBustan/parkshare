@@ -31,19 +31,9 @@ public class SigninActivity : AppCompatActivity() {
         setContentView(R.layout.activity_signin)
         auth = Firebase.auth
 
-        //FirebaseApp.initializeApp(this)
-
         setupUI()
     }
 
-//    public override fun onStart() {
-//        super.onStart()
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//        val currentUser = auth.currentUser
-//        if (currentUser != null) {
-//            //reload()
-//        }
-//    }
     private fun setupUI() {
         nameTextField = findViewById(R.id.signinNameVal)
         CityTextField = findViewById(R.id.sininCityVal)
@@ -53,13 +43,11 @@ public class SigninActivity : AppCompatActivity() {
         cancelButton = findViewById(R.id.btnCancelSignin)
 
         saveButton?.setOnClickListener {
-            //val name = nameTextField?.text.toString()
             createAccount(emailField?.text.toString(), passwordField?.text.toString())
         }
 
         cancelButton?.setOnClickListener {
             finish()
-
         }
     }
 
@@ -69,7 +57,6 @@ public class SigninActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = auth.currentUser
@@ -84,10 +71,10 @@ public class SigninActivity : AppCompatActivity() {
                         "Authentication failed.",
                         Toast.LENGTH_SHORT,
                     ).show()
-                    updateUI(null)
+                    //updateUI(null)
 
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
+                    //val intent = Intent(this, MainActivity::class.java)
+                    //startActivity(intent)
                 }
             }
     }
