@@ -14,7 +14,7 @@ import com.example.parkshare_new.R
 import com.example.parkshare_new.models.Model
 import com.example.parkshare_new.models.Parking
 import com.example.parkshare_new.modules.parkingLots.adapter.ParkingLotsRecyclerAdapter
-
+//TODO : DELETE FILE?
 class homepageActivity : AppCompatActivity(){
     var parkingLotsRecyclerView: RecyclerView? = null
     var parkingLots: MutableList<Parking>? = null
