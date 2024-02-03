@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".modules.parkingLots.homepageActivity">
+    tools:context=".modules.parkingLots.ParkingLotsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvParkingLotsList"
+        android:id="@+id/rvParkingLotsFragmentList"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

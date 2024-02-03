@@ -8,7 +8,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.parkshare_new.activites.MainActivity
-import com.example.parkshare_new.activites.homepageActivity
+import com.example.parkshare_new.modules.parkingLots.homepageActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth

@@ -1,4 +1,4 @@
-package com.example.parkshare_new.activites
+package com.example.parkshare_new.modules.parkingLots
 
 import android.os.Bundle
 import android.util.Log

@@ -9,7 +9,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import com.example.parkshare_new.R
-import com.example.parkshare_new.firebase.EmailPasswordFragment
+import com.example.parkshare_new.modules.parkingLots.homepageActivity
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
