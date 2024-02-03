@@ -81,7 +81,7 @@ public class SigninActivity : AppCompatActivity() {
     }
 
     private fun updateUI(user :FirebaseUser?) {
-        val intent = Intent(this, homepageActivity::class.java)
+        val intent = Intent(this, MenuActivity::class.java)
         startActivity(intent)
     }
 }
