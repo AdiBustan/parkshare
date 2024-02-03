@@ -15,10 +15,20 @@
         android:theme="@style/Theme.Parksharenew"
         tools:targetApi="31">
         <activity
+            android:name=".activites.MenuActivity"
+            android:exported="true" >
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+        <activity
             android:name=".activites.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -34,7 +44,7 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".activites.homepageActivity"
+            android:name=".modules.parkingLots.homepageActivity"
             android:exported="false">
 
             <!-- <intent-filter> -->
@@ -45,9 +55,8 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".activites.ParkingListActivity"
-            android:exported="false">
-        </activity>
+            android:name=".modules.parkingLots.ParkingListActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
