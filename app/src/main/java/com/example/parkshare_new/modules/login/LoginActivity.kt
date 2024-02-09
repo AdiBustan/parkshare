@@ -1,4 +1,4 @@
-package com.example.parkshare_new.activites
+package com.example.parkshare_new.modules.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.parkshare_new.HomepageActivity
 import com.example.parkshare_new.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -61,7 +62,7 @@ public class LoginActivity : AppCompatActivity(){
     }
 
     private fun updateUI(user : FirebaseUser?) {
-        val intent = Intent(this, homepageActivity::class.java)
+        val intent = Intent(this, HomepageActivity::class.java)
         startActivity(intent)
     }
 }

@@ -7,7 +7,6 @@ import android.view.MenuItem
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.example.parkshare_new.R
 import com.example.parkshare_new.models.Parking
 
 class HomepageActivity : AppCompatActivity() {
