@@ -10,8 +10,10 @@ import android.widget.Button
 import android.widget.Toast
 import com.example.parkshare_new.R
 import com.example.parkshare_new.firebase.EmailPasswordFragment
+import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 class MainActivity : AppCompatActivity() {
 
