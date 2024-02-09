@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    android:label="All Parking Lots"
+    app:startDestination="@id/parkingLotsFragment">
+
+    <fragment
+        android:id="@+id/parkingLotsFragment"
+        android:name="com.example.parkshare_new.modules.parkingLots.ParkingLotsFragment"
+        android:label="All Parking Lots"
+        tools:layout="@layout/fragment_parking_lots">
+        <action
+            android:id="@+id/action_parkingLotsFragment_to_parkingFragment"
+            app:destination="@id/parkingFragment" />
+        <action
+            android:id="@+id/action_parkingLotsFragment_to_userProfileFragment"
+            app:destination="@id/userProfileFragment" />
+        <action
+            android:id="@+id/action_parkingLotsFragment_to_addParkingFragment"
+            app:destination="@id/addParkingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addParkingFragment"
+        android:name="com.example.parkshare_new.modules.addParking.AddParkingFragment"
+        android:label="Add New Parking"
+        tools:layout="@layout/fragment_add_parking" />
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.example.parkshare_new.modules.userProfile.UserProfileFragment"
+        android:label="Your Profile"
+        tools:layout="@layout/fragment_user_profile" />
+    <fragment
+        android:id="@+id/parkingFragment"
+        android:name="com.example.parkshare_new.modules.parkingLots.ParkingFragment"
+        android:label="Parking Details"
+        tools:layout="@layout/fragment_parking">
+        <argument
+            android:name="ADDRESS"
+            app:argType="string" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_userProfileFragment"
+        app:destination="@id/userProfileFragment" />
+</navigation>

@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import com.example.parkshare_new.modules.signin.SigninActivity
 import com.example.parkshare_new.R
 import com.example.parkshare_new.firebase.EmailPasswordFragment
 import com.google.firebase.Firebase
@@ -51,7 +52,7 @@ class MainActivity : AppCompatActivity() {
     private fun reload() {
         auth.currentUser!!.reload().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                val intent = Intent(this, homepageActivity::class.java)
+                val intent = Intent(this, HomepageActivity::class.java)
                 startActivity(intent)
                 Toast.makeText(this, "Reload successful!", Toast.LENGTH_SHORT).show()
             } else {
