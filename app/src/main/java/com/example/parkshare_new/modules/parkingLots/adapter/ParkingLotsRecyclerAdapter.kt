@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.parkshare_new.R
+import com.example.parkshare_new.HomepageActivity
 import com.example.parkshare_new.models.Parking
-import com.example.parkshare_new.modules.parkingLots.homepageActivity
 
 class ParkingLotsRecyclerAdapter(var parkingLots: MutableList<Parking>?): RecyclerView.Adapter<ParkingLotsViewHolder> () {
-    var listener: homepageActivity.OnItemClickListener? = null
+    var listener: HomepageActivity.OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParkingLotsViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.parking_list_row, parent, false)

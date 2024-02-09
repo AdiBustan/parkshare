@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Parksharenew" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.Parksharenew" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Customize your light theme here. -->
         <item name="android:colorBackground">@color/background</item>
         <item name="colorPrimary">@color/lightBlue</item>

@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="background">#FBF9F1</color>
     <color name="lightBlue">#659C9E</color>
+    <color name="ActionBar">#CDCBC1</color>
 </resources>

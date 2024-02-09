@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="RoundedButton">
-        <item name="android:background">@drawable/button_border</item>
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Customize your theme here -->
+        <item name="colorPrimary">@color/ActionBar</item>
     </style>
+<!--    <style name="RoundedButton">-->
+<!--        <item name="android:background">@drawable/button_border</item>-->
+<!--    </style>-->
 </resources>
