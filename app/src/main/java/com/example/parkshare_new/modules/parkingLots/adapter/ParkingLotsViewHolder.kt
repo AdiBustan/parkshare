@@ -6,11 +6,11 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.parkshare_new.R
+import com.example.parkshare_new.HomepageActivity
 import com.example.parkshare_new.models.Parking
-import com.example.parkshare_new.modules.parkingLots.homepageActivity
 
 class ParkingLotsViewHolder(val itemView: View,
-                            val listener: homepageActivity.OnItemClickListener?,
+                            val listener: HomepageActivity.OnItemClickListener?,
                             var parkingLots: MutableList<Parking>?): RecyclerView.ViewHolder(itemView) {
 
     var parkingAddressTextView : TextView? = null

@@ -11,8 +11,8 @@ class Model private constructor(){
     init {
         for (i in 0..20) {
             var parking = Parking("avatar: https://me.com/avatar.jpg",
-                "address $i",
-                "name: $i",
+                "Address $i",
+                "City: $i",
                 false)
             parkingLots.add(parking)
         }

@@ -1,4 +1,4 @@
-package com.example.parkshare_new.activites
+package com.example.parkshare_new
 
 import android.content.ContentValues
 import android.content.Intent
@@ -8,8 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
-import com.example.parkshare_new.R
-import com.example.parkshare_new.modules.parkingLots.homepageActivity
+import com.example.parkshare_new.modules.signin.SigninActivity
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -48,7 +47,7 @@ class MainActivity : AppCompatActivity() {
     private fun reload() {
         auth.currentUser!!.reload().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                val intent = Intent(this, homepageActivity::class.java)
+                val intent = Intent(this, HomepageActivity::class.java)
                 startActivity(intent)
                 Toast.makeText(this, "Reload successful!", Toast.LENGTH_SHORT).show()
             } else {

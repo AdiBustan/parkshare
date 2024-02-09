@@ -6,9 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.parkshare_new.R
+import com.example.parkshare_new.HomepageActivity
 import com.example.parkshare_new.models.Model
 import com.example.parkshare_new.models.Parking
 import com.example.parkshare_new.modules.parkingLots.adapter.ParkingLotsRecyclerAdapter
@@ -33,9 +36,15 @@ class ParkingLotsFragment : Fragment() {
         parkingLotsRecyclerView?.layoutManager = LinearLayoutManager(context)
 
         val adapter = ParkingLotsRecyclerAdapter(parkingLots)
-        adapter.listener = object : homepageActivity.OnItemClickListener {
+
+        adapter.listener = object : HomepageActivity.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 Log.i("TAG", "ParkingLotsRecyclerAdapter: position clicked on: $position")
+                val parking = parkingLots?.get(position)
+                parking?.let {
+                    val action = ParkingLotsFragmentDirections.actionParkingLotsFragmentToParkingFragment(it.address)
+                    Navigation.findNavController(view).navigate(action)
+                }
             }
 
             override fun onParkingClicked(parking: Parking?) {
@@ -44,6 +53,10 @@ class ParkingLotsFragment : Fragment() {
         }
 
         parkingLotsRecyclerView?.adapter = adapter
+
+        val addParkingButton: ImageButton = view.findViewById(R.id.btnParkingLotsFragmentAdd)
+        val actionAdd = Navigation.createNavigateOnClickListener(R.id.action_parkingLotsFragment_to_addParkingFragment)
+        addParkingButton.setOnClickListener(actionAdd)
 
         return view
     }
