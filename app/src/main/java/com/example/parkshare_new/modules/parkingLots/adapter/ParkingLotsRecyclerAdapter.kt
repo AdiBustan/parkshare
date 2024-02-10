@@ -7,7 +7,7 @@ import com.example.parkshare_new.R
 import com.example.parkshare_new.HomepageActivity
 import com.example.parkshare_new.models.Parking
 
-class ParkingLotsRecyclerAdapter(var parkingLots: MutableList<Parking>?): RecyclerView.Adapter<ParkingLotsViewHolder> () {
+class ParkingLotsRecyclerAdapter(var parkingLots: List<Parking>?): RecyclerView.Adapter<ParkingLotsViewHolder> () {
     var listener: HomepageActivity.OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParkingLotsViewHolder {

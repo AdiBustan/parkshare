@@ -11,7 +11,7 @@ import com.example.parkshare_new.models.Parking
 
 class ParkingLotsViewHolder(val itemView: View,
                             val listener: HomepageActivity.OnItemClickListener?,
-                            var parkingLots: MutableList<Parking>?): RecyclerView.ViewHolder(itemView) {
+                            var parkingLots: List<Parking>?): RecyclerView.ViewHolder(itemView) {
 
     var parkingAddressTextView : TextView? = null
     var parkingCityTextView: TextView? = null
