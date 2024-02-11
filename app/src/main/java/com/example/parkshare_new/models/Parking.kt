@@ -1,6 +1,11 @@
 package com.example.parkshare_new.models
 
-class Parking (val parkingImage: String,
-               val address: String,
-               val city: String,
-               var isChecked: Boolean)
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
+data class Parking (
+    @PrimaryKey val address: String,
+    val avatar: String,
+    val city: String,
+    var isChecked: Boolean)
