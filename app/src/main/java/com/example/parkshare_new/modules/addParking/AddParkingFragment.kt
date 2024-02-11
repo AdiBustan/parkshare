@@ -1,6 +1,7 @@
 package com.example.parkshare_new.modules.addParking
 
 import android.os.Bundle
+import android.view.Display.Mode
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,8 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.navigation.Navigation
 import com.example.parkshare_new.R
+import com.example.parkshare_new.models.Model
+import com.example.parkshare_new.models.Parking
 
 class AddParkingFragment : Fragment() {
 
@@ -34,7 +37,13 @@ class AddParkingFragment : Fragment() {
         cancelButton = view.findViewById(R.id.btnCancelSignin)
 
         saveButton?.setOnClickListener {
-            //TODO
+            val address = addressTextField?.text.toString()
+            val city = cityTextField?.text.toString()
+
+            val parking = Parking(address, "", city, false)
+            Model.instance.addParking(parking) {
+                Navigation.findNavController(it).popBackStack(R.id.parkingLotsFragment, false)
+            }
         }
 
         cancelButton?.setOnClickListener {
