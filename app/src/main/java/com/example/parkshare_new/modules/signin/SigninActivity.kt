@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.parkshare_new.R
 import com.example.parkshare_new.HomepageActivity
+import com.example.parkshare_new.databinding.ActivityMainBinding
+import com.example.parkshare_new.databinding.ActivitySigninBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -26,22 +28,25 @@ public class SigninActivity : AppCompatActivity() {
     var cancelButton: Button? = null
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var binding: ActivitySigninBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_signin)
+        binding = ActivitySigninBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
         auth = Firebase.auth
 
         setupUI()
     }
 
     private fun setupUI() {
-        nameTextField = findViewById(R.id.signinNameVal)
-        CityTextField = findViewById(R.id.sininCityVal)
-        emailField = findViewById(R.id.signinEmailVal)
-        passwordField = findViewById(R.id.signinPasswordVal)
-        saveButton = findViewById(R.id.btnSaveSignin)
-        cancelButton = findViewById(R.id.btnCancelSignin)
+        nameTextField = binding.ptNameSignin //findViewById(R.id.signinNameVal)
+        CityTextField = binding.ptCitySignin //findViewById(R.id.sininCityVal)
+        emailField = binding.signinEmailVal //findViewById(R.id.signinEmailVal)
+        passwordField = binding.signinPasswordVal  //findViewById(R.id.signinPasswordVal)
+        saveButton = binding.btnSaveSignin //findViewById(R.id.btnSaveSignin)
+        cancelButton = binding.btnCancelSignin //findViewById(R.id.btnCancelSignin)
 
         saveButton?.setOnClickListener {
             createAccount(emailField?.text.toString(), passwordField?.text.toString())

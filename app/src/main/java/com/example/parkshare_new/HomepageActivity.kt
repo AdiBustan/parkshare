@@ -8,15 +8,20 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.example.parkshare_new.R
+import com.example.parkshare_new.databinding.ActivityHomepageBinding
+import com.example.parkshare_new.databinding.ActivityMainBinding
 import com.example.parkshare_new.models.Parking
 
 class HomepageActivity : AppCompatActivity() {
 
     private var navController: NavController? = null
+    private lateinit var binding: ActivityHomepageBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_homepage)
+        binding = ActivityHomepageBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
 
         val navHostFragment: NavHostFragment? = supportFragmentManager.findFragmentById(R.id.navHostHomepage) as? NavHostFragment
         navController = navHostFragment?.navController

@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/imParkingImageAddParking"
         android:layout_width="wrap_content"
         android:layout_height="207dp"
         android:layout_marginStart="8dp"
@@ -19,7 +19,7 @@
         app:srcCompat="@drawable/user" />
 
     <TextView
-        android:id="@+id/signinName"
+        android:id="@+id/tvNameSignin"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_marginStart="8dp"
@@ -29,10 +29,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintTop_toBottomOf="@+id/imParkingImageAddParking" />
 
     <EditText
-        android:id="@+id/signinNameVal"
+        android:id="@+id/ptNameSignin"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
@@ -42,10 +42,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signinName" />
+        app:layout_constraintTop_toBottomOf="@+id/tvNameSignin" />
 
     <TextView
-        android:id="@+id/signinCity"
+        android:id="@+id/tvCitySignin"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_marginStart="8dp"
@@ -55,10 +55,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signinNameVal" />
+        app:layout_constraintTop_toBottomOf="@+id/ptNameSignin" />
 
     <EditText
-        android:id="@+id/sininCityVal"
+        android:id="@+id/ptCitySignin"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
@@ -68,7 +68,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signinCity" />
+        app:layout_constraintTop_toBottomOf="@+id/tvCitySignin" />
 
     <TextView
         android:id="@+id/signinEmail"
@@ -81,7 +81,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sininCityVal" />
+        app:layout_constraintTop_toBottomOf="@+id/ptCitySignin" />
 
     <EditText
         android:id="@+id/signinEmailVal"
