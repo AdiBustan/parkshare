@@ -13,31 +13,32 @@ class Model private constructor(){
     private val database = AppLocalDatabase.db
     private var executor = Executors.newSingleThreadExecutor()
     private var mainHandler = HandlerCompat.createAsync(Looper.getMainLooper())
+    private val firebaseModel = FirebaseModel()
     companion object {
         val instance: Model = Model()
     }
 
     fun getAllParkingLots(callback: (List<Parking>) -> Unit) {
-        executor.execute {
-            Thread.sleep(5000) //TODO: delete line
-
-            val parkingLots = database.studentDao().getAll()
-
-            mainHandler.post {
-                callback(parkingLots) // Back to the main thread
-
-            }
-        }
+        firebaseModel.getAllParkingLots(callback)
+//        executor.execute {
+//            Thread.sleep(5000) //TODO: delete line
+//
+//            val parkingLots = database.parkingDao().getAll()
+//
+//            mainHandler.post {
+//                callback(parkingLots) // Back to the main thread
+//
+//            }
+//        }
     }
 
     fun addParking(parking: Parking, callback: () -> Unit) {
-        executor.execute {
-            database.studentDao().insert(parking)
-            mainHandler.post {
-                callback()
-            }
-        }
+        firebaseModel.addParking(parking, callback)
+//        executor.execute {
+//            database.parkingDao().insert(parking)
+//            mainHandler.post {
+//                callback()
+//            }
+//        }
     }
-
-
 }
