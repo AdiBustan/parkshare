@@ -1,5 +1,6 @@
 package com.example.parkshare_new.models
 
+import android.location.Address
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.memoryCacheSettings
@@ -36,6 +37,20 @@ class FirebaseModel {
     }
 
     fun addParking(parking: Parking, callback: () -> Unit) {
+        db.collection(PARKING_LOTS_COLLECTION_PATH)
+            .document(parking.address).set(parking.json).addOnSuccessListener {
+                callback()
+            }
+    }
+
+    fun deleteParking(parking: Parking, callback: () -> Unit) {
+        db.collection(PARKING_LOTS_COLLECTION_PATH)
+            .document(parking.address).delete().addOnSuccessListener {
+                callback()
+            }
+    }
+
+    fun updateToUnavailable(parking: Parking, callback: () -> Unit) {
         db.collection(PARKING_LOTS_COLLECTION_PATH)
             .document(parking.address).set(parking.json).addOnSuccessListener {
                 callback()

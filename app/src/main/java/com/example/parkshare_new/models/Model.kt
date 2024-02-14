@@ -1,5 +1,6 @@
 package com.example.parkshare_new.models
 
+import android.location.Address
 import android.os.Looper
 import androidx.core.os.HandlerCompat
 import com.example.parkshare_new.dao.AppLocalDatabase
@@ -40,5 +41,14 @@ class Model private constructor(){
 //                callback()
 //            }
 //        }
+    }
+
+    fun deleteParking(parking: Parking, callback: () -> Unit) {
+        firebaseModel.deleteParking(parking, callback)
+    }
+
+    fun updateToUnavailable(parking: Parking, callback: () -> Unit) {
+        firebaseModel.updateToUnavailable(parking, callback)
+
     }
 }
