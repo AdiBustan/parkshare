@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,9 +23,10 @@ import com.example.parkshare_new.modules.parkingLots.adapter.ParkingLotsRecycler
 
 class ParkingLotsFragment : Fragment() {
     var parkingLotsRecyclerView: RecyclerView? = null
+    var progressBar: ProgressBar? = null
+    var noParkingsTextView: TextView? = null
     var parkingLots: List<Parking>? = null
     var adapter : ParkingLotsRecyclerAdapter? = null
-    var progressBar: ProgressBar? = null
 
     private var _binding: FragmentParkingLotsBinding? = null
     private val binding get() = _binding!!
@@ -39,14 +41,17 @@ class ParkingLotsFragment : Fragment() {
 
         adapter = ParkingLotsRecyclerAdapter(parkingLots)
 
+        noParkingsTextView = binding.tvNoParkingParkingLotsFragment
         progressBar = binding.progressBar //view.findViewById(R.id.progressBar)
         progressBar?.visibility = View.VISIBLE
+
 
         Model.instance.getAllParkingLots { parkingLots ->
             this.parkingLots = parkingLots
             adapter?.parkingLots = parkingLots
             adapter?.notifyDataSetChanged()
 
+            updateEmptyViewVisibility()
             progressBar?.visibility = View.GONE
         }
 
@@ -55,7 +60,6 @@ class ParkingLotsFragment : Fragment() {
 
         //set the layout manager and adapter
         parkingLotsRecyclerView?.layoutManager = LinearLayoutManager(context)
-
 
         adapter?.listener = object : HomepageActivity.OnItemClickListener {
             override fun onItemClick(position: Int) {
@@ -81,6 +85,14 @@ class ParkingLotsFragment : Fragment() {
         return view
     }
 
+    private fun updateEmptyViewVisibility() {
+        if (this.parkingLots?.isEmpty() == true) {
+            noParkingsTextView?.visibility = View.VISIBLE
+        } else {
+            noParkingsTextView?.visibility = View.GONE
+        }
+    }
+
     override fun onResume() {
         super.onResume()
 
@@ -89,6 +101,7 @@ class ParkingLotsFragment : Fragment() {
             adapter?.parkingLots = parkingLots
             adapter?.notifyDataSetChanged()
 
+            updateEmptyViewVisibility()
             progressBar?.visibility = View.GONE
         }
     }
