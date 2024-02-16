@@ -21,6 +21,10 @@ interface ParkingDao {
             "WHERE address LIKE :address AND city LIKE :city")
     fun getParkingByAddressAndCity(address: String, city: String) : Parking
 
+    @Query("SELECT * FROM Parking " +
+            "WHERE owner=:owner")
+    fun getParkingByUser(owner: String) : Parking
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg parkingLots: Parking)
 

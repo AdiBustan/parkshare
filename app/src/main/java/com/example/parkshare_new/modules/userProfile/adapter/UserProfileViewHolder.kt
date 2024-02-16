@@ -11,7 +11,7 @@ class UserProfileViewHolder(val itemView: View) {
     var userNumOfUsed: TextView? = null
     var userNumOfPosts: TextView? = null
     var userNumOfHelps: TextView? = null
-    var userPosts: Array<Parking>? = null
+    var userPosts: List<Parking>? = null
     var profile: Profile? = null
 
     init {

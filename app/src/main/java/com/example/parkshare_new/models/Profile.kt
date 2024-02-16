@@ -1,8 +1,12 @@
 package com.example.parkshare_new.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 class Profile (
-    val userName: String,
+    @PrimaryKey val userName: String,
     val numberOfHelps: Int,
     val numberOfUsed: Int,
-    val posts: Array<Parking>
+    val posts: List<Parking>
 )

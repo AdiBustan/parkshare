@@ -8,4 +8,5 @@ data class Parking (
     @PrimaryKey val address: String,
     val avatar: String,
     val city: String,
-    var isChecked: Boolean)
+    var isChecked: Boolean,
+    var owner: String)
