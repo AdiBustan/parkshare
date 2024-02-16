@@ -34,12 +34,7 @@ class Model private constructor(){
     }
 
     fun getAllParkingLotsPerUser(username: String, callback: (List<Parking>) -> Unit) {
-        executor.execute {
-            val parkingLots = database.studentDao().getParkingByUser(username)
-            mainHandler.post {
-                callback(listOf(parkingLots)) // Back to the main thread
-            }
-        }
+        firebaseModel.getAllParkingLotsByUser(username, callback)
     }
 
     fun addParking(parking: Parking, callback: () -> Unit) {

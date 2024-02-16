@@ -32,6 +32,7 @@ class UserProfileFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_user_profile, container, false)
         adapter = ParkingLotsRecyclerAdapter(parkingLots)
+        val username = Navigation.createNavigateOnClickListener(R.id.action_global_userProfileFragment)
 
         // TODO - get the username for send
         Model.instance.getAllParkingLotsPerUser(username) {

@@ -69,7 +69,7 @@ class AddParkingFragment : Fragment() {
             val city = cityTextField?.text ?: ""
             val avatar = selectedImageURI.toString()
 
-            val parking = Parking(address.toString(), avatar, city.toString(), false, false, System.currentTimeMillis())
+            val parking = Parking(address.toString(), avatar, city.toString(), "", false, false, System.currentTimeMillis())
             Model.instance.addParking(parking) {
                 Navigation.findNavController(it).popBackStack(R.id.parkingLotsFragment, false)
             }
