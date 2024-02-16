@@ -1,7 +1,6 @@
 package com.example.parkshare_new
 
 import android.content.ContentValues
-import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,11 +9,11 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import com.example.parkshare_new.databinding.ActivityMainBinding
+import com.example.parkshare_new.modules.login.LoginActivity
 import com.example.parkshare_new.modules.signin.SigninActivity
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
