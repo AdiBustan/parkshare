@@ -8,7 +8,7 @@ import com.example.parkshare_new.models.Parking
 
 @Database(entities = [Parking::class], version = 1)
 abstract class AppLocalDbRepository : RoomDatabase() {
-    abstract fun studentDao(): ParkingDao
+    abstract fun parkingDao(): ParkingDao
 }
 
 object AppLocalDatabase {

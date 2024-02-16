@@ -1,5 +1,6 @@
 package com.example.parkshare_new.models
 
+import android.location.Address
 import android.os.Looper
 import androidx.core.os.HandlerCompat
 import com.example.parkshare_new.dao.AppLocalDatabase
@@ -13,21 +14,23 @@ class Model private constructor(){
     private val database = AppLocalDatabase.db
     private var executor = Executors.newSingleThreadExecutor()
     private var mainHandler = HandlerCompat.createAsync(Looper.getMainLooper())
+    private val firebaseModel = FirebaseModel()
     companion object {
         val instance: Model = Model()
     }
 
     fun getAllParkingLots(callback: (List<Parking>) -> Unit) {
-        executor.execute {
-            Thread.sleep(5000) //TODO: delete line
-
-            val parkingLots = database.studentDao().getAll()
-
-            mainHandler.post {
-                callback(parkingLots) // Back to the main thread
-
-            }
-        }
+        firebaseModel.getAllParkingLots(callback)
+//        executor.execute {
+//            Thread.sleep(5000) //TODO: delete line
+//
+//            val parkingLots = database.parkingDao().getAll()
+//
+//            mainHandler.post {
+//                callback(parkingLots) // Back to the main thread
+//
+//            }
+//        }
     }
 
     fun getAllParkingLotsPerUser(username: String, callback: (List<Parking>) -> Unit) {
@@ -40,13 +43,21 @@ class Model private constructor(){
     }
 
     fun addParking(parking: Parking, callback: () -> Unit) {
-        executor.execute {
-            database.studentDao().insert(parking)
-            mainHandler.post {
-                callback()
-            }
-        }
+        firebaseModel.addParking(parking, callback)
+//        executor.execute {
+//            database.parkingDao().insert(parking)
+//            mainHandler.post {
+//                callback()
+//            }
+//        }
     }
 
+    fun deleteParking(parking: Parking, callback: () -> Unit) {
+        firebaseModel.deleteParking(parking, callback)
+    }
 
+    fun updateToUnavailable(parking: Parking, callback: () -> Unit) {
+        firebaseModel.updateToUnavailable(parking, callback)
+
+    }
 }
