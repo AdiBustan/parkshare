@@ -1,7 +1,6 @@
 package com.example.parkshare_new
 
 import android.content.ContentValues
-import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,11 +9,11 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import com.example.parkshare_new.databinding.ActivityMainBinding
+import com.example.parkshare_new.modules.login.LoginActivity
 import com.example.parkshare_new.modules.signin.SigninActivity
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
@@ -31,8 +30,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val signinButton : Button = binding.SigninButton //findViewById(R.id.SigninButton)
+        val loginButton : Button = findViewById(R.id.alreadySignButton)
 
         signinButton.setOnClickListener(::onSigninBottonClicked)
+        loginButton.setOnClickListener(::onLoginPageButtonClicked)
     }
 
     //TODO: remove comment in case EmailPasswordFragment.kt is working
@@ -68,6 +69,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun onSigninBottonClicked(view: View) {
         val intent = Intent(this, SigninActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun onLoginPageButtonClicked(view: View) {
+        val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }
 }
