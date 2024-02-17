@@ -34,6 +34,10 @@
             android:name=".modules.signin.SigninActivity"
             android:exported="false">
         </activity>
+        <activity
+            android:name=".modules.login.LoginActivity"
+            android:exported="false">
+        </activity>
     </application>
 
 </manifest>
