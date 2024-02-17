@@ -41,12 +41,12 @@ public class SigninActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        nameTextField = binding.ptNameSignin //findViewById(R.id.signinNameVal)
-        CityTextField = binding.ptCitySignin //findViewById(R.id.sininCityVal)
-        emailField = binding.signinEmailVal //findViewById(R.id.signinEmailVal)
-        passwordField = binding.signinPasswordVal  //findViewById(R.id.signinPasswordVal)
-        saveButton = binding.btnSaveSignin //findViewById(R.id.btnSaveSignin)
-        cancelButton = binding.btnCancelSignin //findViewById(R.id.btnCancelSignin)
+        nameTextField = binding.ptNameSignin
+        CityTextField = binding.ptCitySignin
+        emailField = binding.signinEmailVal
+        passwordField = binding.signinPasswordVal
+        saveButton = binding.btnSaveSignin
+        cancelButton = binding.btnCancelSignin
 
         saveButton?.setOnClickListener {
             createAccount(emailField?.text.toString(), passwordField?.text.toString())

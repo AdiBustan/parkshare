@@ -24,32 +24,23 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        FirebaseApp.initializeApp(this)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-
-        FirebaseApp.initializeApp(this)
         setContentView(binding.root)
 
         val signinButton : Button = binding.SigninButton //findViewById(R.id.SigninButton)
-
         signinButton.setOnClickListener(::onSigninBottonClicked)
     }
-
-    //TODO: remove comment in case EmailPasswordFragment.kt is working
-//    public override fun onStart() {
-//        super.onStart()
-//        passwordFragment.outoConnect()
-//    }
 
     public override fun onStart() {
         super.onStart()
         auth = Firebase.auth
-        // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         //    TODO: remove comment - this func initiate the app with already signin user
-//        if (currentUser != null) {
-//            reload()
-//        }
+        if (currentUser != null) {
+            reload()
+        }
     }
 
     private fun reload() {
@@ -64,7 +55,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
 
     private fun onSigninBottonClicked(view: View) {
         val intent = Intent(this, SigninActivity::class.java)
