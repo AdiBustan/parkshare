@@ -38,9 +38,9 @@ class FirebaseModel {
         }
     }
 
-    fun getAllParkingLotsByUser(username: String, callback: (List<Parking>) -> Unit) {
+    fun getAllParkingLotsByUser(email: String, callback: (List<Parking>) -> Unit) {
 
-        val query = db.collection(PARKING_LOTS_COLLECTION_PATH).whereEqualTo("owner", username)
+        val query = db.collection(PARKING_LOTS_COLLECTION_PATH).whereEqualTo("owner", email)
 
         query.get()
             .addOnSuccessListener { querySnapshot ->

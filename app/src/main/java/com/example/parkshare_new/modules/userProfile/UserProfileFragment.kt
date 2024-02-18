@@ -4,17 +4,14 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.parkshare_new.HomepageActivity
 import com.example.parkshare_new.R
+import com.example.parkshare_new.dao.UserDatabase
 import com.example.parkshare_new.models.Model
 import com.example.parkshare_new.models.Parking
 import com.example.parkshare_new.modules.parkingLots.ParkingLotsFragmentDirections
@@ -25,6 +22,9 @@ class UserProfileFragment : Fragment() {
     var parkingLotsRecyclerView: RecyclerView? = null
     var parkingLots: List<Parking>? = null
     var adapter : ParkingLotsRecyclerAdapter? = null
+    val database = UserDatabase.getInstance(requireContext().applicationContext)
+    val userDao = database.userDao()
+    private val currUser = userDao.getUser()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,10 +32,8 @@ class UserProfileFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_user_profile, container, false)
         adapter = ParkingLotsRecyclerAdapter(parkingLots)
-        val username = Navigation.createNavigateOnClickListener(R.id.action_global_userProfileFragment)
 
-        // TODO - get the username for send
-        Model.instance.getAllParkingLotsPerUser(username) {
+        Model.instance.getAllParkingLotsPerUser(currUser.email) {
             this.parkingLots = parkingLots
             adapter?.parkingLots = parkingLots
             adapter?.notifyDataSetChanged()
@@ -71,7 +69,7 @@ class UserProfileFragment : Fragment() {
         super.onResume()
 
         // TODO - get the username for send
-        Model.instance.getAllParkingLotsPerUser(username) { parkingLots ->
+        Model.instance.getAllParkingLotsPerUser(currUser.email) { parkingLots ->
             this.parkingLots = parkingLots
             adapter?.parkingLots = parkingLots
             adapter?.notifyDataSetChanged()

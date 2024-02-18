@@ -18,6 +18,10 @@
         <activity
             android:name=".HomepageActivity"
             android:exported="true" >
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,11 +29,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name=".modules.signin.SigninActivity"
+            android:name=".modules.signUp.signUpActivity"
             android:exported="false">
         </activity>
         <activity

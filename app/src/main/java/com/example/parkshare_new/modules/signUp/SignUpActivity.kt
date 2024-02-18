@@ -1,4 +1,4 @@
-package com.example.parkshare_new.modules.signin;
+package com.example.parkshare_new.modules.signUp;
 
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -8,17 +8,23 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.parkshare_new.R
+import androidx.lifecycle.lifecycleScope
 import com.example.parkshare_new.HomepageActivity
-import com.example.parkshare_new.databinding.ActivityMainBinding
-import com.example.parkshare_new.databinding.ActivitySigninBinding
+import com.example.parkshare_new.dao.UserDao
+import com.example.parkshare_new.dao.UserDatabase
+import com.example.parkshare_new.databinding.ActivitySignupBinding
+import com.example.parkshare_new.models.LocalUser
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.sql.Timestamp
+import java.time.LocalDate
 
 
-public class SigninActivity : AppCompatActivity() {
+public class signUpActivity : AppCompatActivity() {
 
     var nameTextField: EditText? = null
     var CityTextField: EditText? = null
@@ -26,13 +32,17 @@ public class SigninActivity : AppCompatActivity() {
     var passwordField: EditText? = null
     var saveButton: Button? = null
     var cancelButton: Button? = null
+    var database: UserDatabase? = null
+    var userDao: UserDao? = null
 
     private lateinit var auth: FirebaseAuth
-    private lateinit var binding: ActivitySigninBinding
+    private lateinit var binding: ActivitySignupBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySigninBinding.inflate(layoutInflater)
+        binding = ActivitySignupBinding.inflate(layoutInflater)
+        database = UserDatabase.getInstance(applicationContext)
+        userDao = database!!.userDao()
 
         setContentView(binding.root)
         auth = Firebase.auth
@@ -41,12 +51,12 @@ public class SigninActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        nameTextField = binding.ptNameSignin //findViewById(R.id.signinNameVal)
-        CityTextField = binding.ptCitySignin //findViewById(R.id.sininCityVal)
-        emailField = binding.signinEmailVal //findViewById(R.id.signinEmailVal)
-        passwordField = binding.signinPasswordVal  //findViewById(R.id.signinPasswordVal)
-        saveButton = binding.btnSaveSignin //findViewById(R.id.btnSaveSignin)
-        cancelButton = binding.btnCancelSignin //findViewById(R.id.btnCancelSignin)
+        nameTextField = binding.ptNamesignUp //findViewById(R.id.signUpNameVal)
+        CityTextField = binding.ptCitysignUp //findViewById(R.id.sininCityVal)
+        emailField = binding.signUpEmailVal //findViewById(R.id.signUpEmailVal)
+        passwordField = binding.signUpPasswordVal  //findViewById(R.id.signUpPasswordVal)
+        saveButton = binding.btnSavesignUp //findViewById(R.id.btnSavesignUp)
+        cancelButton = binding.btnCancelsignUp //findViewById(R.id.btnCancelsignUp)
 
         saveButton?.setOnClickListener {
             createAccount(emailField?.text.toString(), passwordField?.text.toString())
@@ -66,6 +76,13 @@ public class SigninActivity : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "createUserWithEmail:success")
                     val user = auth.currentUser
+
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        Log.i("LocalStorage", "Start to save new user on local data")
+                        userDao!!.insertUser(LocalUser(email = email, timestamp = System.currentTimeMillis()))
+                        Log.i("LocalStorage", "save local user successfully, email: $email")
+                    }
+
                     // Update UI or do something with the user information
                     updateUI(user)
 

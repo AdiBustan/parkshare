@@ -3,7 +3,7 @@ package com.example.parkshare_new.models
 import android.location.Address
 import android.os.Looper
 import androidx.core.os.HandlerCompat
-import com.example.parkshare_new.dao.AppLocalDatabase
+//import com.example.parkshare_new.dao.AppLocalDatabase
 import java.util.concurrent.Callable
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
@@ -11,7 +11,7 @@ import javax.security.auth.callback.Callback
 
 class Model private constructor(){
 
-    private val database = AppLocalDatabase.db
+//    private val database = AppLocalDatabase.db
     private var executor = Executors.newSingleThreadExecutor()
     private var mainHandler = HandlerCompat.createAsync(Looper.getMainLooper())
     private val firebaseModel = FirebaseModel()
@@ -33,8 +33,8 @@ class Model private constructor(){
 //        }
     }
 
-    fun getAllParkingLotsPerUser(username: String, callback: (List<Parking>) -> Unit) {
-        firebaseModel.getAllParkingLotsByUser(username, callback)
+    fun getAllParkingLotsPerUser(email: String, callback: (List<Parking>) -> Unit) {
+        firebaseModel.getAllParkingLotsByUser(email, callback)
     }
 
     fun addParking(parking: Parking, callback: () -> Unit) {

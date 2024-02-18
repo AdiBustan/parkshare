@@ -19,7 +19,7 @@
         app:srcCompat="@drawable/user" />
 
     <TextView
-        android:id="@+id/tvNameSignin"
+        android:id="@+id/tvNamesignUp"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_marginStart="8dp"
@@ -32,7 +32,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imParkingImageAddParking" />
 
     <EditText
-        android:id="@+id/ptNameSignin"
+        android:id="@+id/ptNamesignUp"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
@@ -42,10 +42,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvNameSignin" />
+        app:layout_constraintTop_toBottomOf="@+id/tvNamesignUp" />
 
     <TextView
-        android:id="@+id/tvCitySignin"
+        android:id="@+id/tvCitysignUp"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_marginStart="8dp"
@@ -55,10 +55,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ptNameSignin" />
+        app:layout_constraintTop_toBottomOf="@+id/ptNamesignUp" />
 
     <EditText
-        android:id="@+id/ptCitySignin"
+        android:id="@+id/ptCitysignUp"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
@@ -68,10 +68,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCitySignin" />
+        app:layout_constraintTop_toBottomOf="@+id/tvCitysignUp" />
 
     <TextView
-        android:id="@+id/signinEmail"
+        android:id="@+id/signUpEmail"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_marginStart="8dp"
@@ -81,10 +81,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ptCitySignin" />
+        app:layout_constraintTop_toBottomOf="@+id/ptCitysignUp" />
 
     <EditText
-        android:id="@+id/signinEmailVal"
+        android:id="@+id/signUpEmailVal"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
@@ -94,10 +94,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signinEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpEmail" />
 
     <TextView
-        android:id="@+id/signinPassword"
+        android:id="@+id/signUpPassword"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_marginStart="8dp"
@@ -107,10 +107,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signinEmailVal" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpEmailVal" />
 
     <EditText
-        android:id="@+id/signinPasswordVal"
+        android:id="@+id/signUpPasswordVal"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
@@ -120,11 +120,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signinPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpPassword" />
 
 
     <Button
-        android:id="@+id/btnSaveSignin"
+        android:id="@+id/btnSavesignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -135,7 +135,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/btnCancelSignin"
+        android:id="@+id/btnCancelsignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="40dp"
@@ -145,7 +145,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/btnSaveSignin" />
+        app:layout_constraintStart_toEndOf="@+id/btnSavesignUp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

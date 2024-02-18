@@ -1,12 +1,9 @@
 package com.example.parkshare_new.models
 
-import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.net.URI
-import java.sql.Timestamp
 
-@Entity
+@Entity 
 data class Parking (
     @PrimaryKey val address: String,
     val avatar: String,

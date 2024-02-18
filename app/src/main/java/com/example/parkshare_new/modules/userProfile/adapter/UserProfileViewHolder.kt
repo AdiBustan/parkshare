@@ -2,11 +2,14 @@ package com.example.parkshare_new.modules.userProfile.adapter
 
 import android.view.View
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.example.parkshare_new.R
 import com.example.parkshare_new.models.Parking
 import com.example.parkshare_new.models.Profile
 
-class UserProfileViewHolder(val itemView: View) {
+class UserProfileViewHolder(val itemView: View,
+                            var parkingLots: List<Parking>?): RecyclerView.ViewHolder(itemView) {
+
     var userName: TextView? = null
     var userNumOfUsed: TextView? = null
     var userNumOfPosts: TextView? = null
