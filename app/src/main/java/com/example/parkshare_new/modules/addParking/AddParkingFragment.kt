@@ -1,12 +1,16 @@
 package com.example.parkshare_new.modules.addParking
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.media.Image
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -26,25 +30,29 @@ import com.example.parkshare_new.databinding.FragmentAddParkingBinding
 import com.example.parkshare_new.databinding.FragmentParkingBinding
 import com.example.parkshare_new.models.Model
 import com.example.parkshare_new.models.Parking
+import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.storage.FirebaseStorage
+import kotlinx.coroutines.tasks.await
 import java.net.URI
-import java.util.jar.Manifest
+import java.util.UUID
 
 @Suppress("DEPRECATION")
 class AddParkingFragment : Fragment() {
 
     private var parkingImageField: ImageView? = null
-    private var addressTextField: EditText? = null
-    private var cityTextField: EditText? = null
+    private var addressTextField: TextInputLayout? = null
+    private var cityTextField: TextInputLayout? = null
     private var uploadImageButton: Button? = null
     private var saveButton: Button? = null
     private var cancelButton: Button? = null
 
-
     private var selectedImageURI: Uri? = null
+    private var downloadUrl: String? = null
     private var _binding: FragmentAddParkingBinding? = null
     private val binding get() = _binding!!
-    private val REQUEST_IMAGE_CAPTURE = 1
-    private val CAMERA_PERMISSION_REQUEST_CODE = 1
+
+    val storage = FirebaseStorage.getInstance()
+    val storageRef = storage.reference
 
     companion object {
         const val REQUEST_CODE_IMAGE = 1
@@ -54,20 +62,13 @@ class AddParkingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         // Inflate the layout for this fragment
         _binding = FragmentAddParkingBinding.inflate(inflater, container, false)
         val view = binding.root
         setupUI()
+
         return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        uploadImageButton = view.findViewById(R.id.imParkingImageAddParking)
-        uploadImageButton?.setOnClickListener {
-            dispatchTakePictureIntent()
-        }
-
     }
 
     private fun setupUI() {
@@ -78,21 +79,31 @@ class AddParkingFragment : Fragment() {
         saveButton = binding.btnSaveAddParking //view.findViewById(R.id.btnSaveSignin)
         cancelButton = binding.btnCancelAddParking //view.findViewById(R.id.btnCancelSignin)
 
-//        uploadImageButton?.setOnClickListener {
-////            OPEN GALLERY CODE:
-////            val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-////            startActivityForResult(galleryIntent, REQUEST_CODE_IMAGE)
-////        }
+        uploadImageButton?.setOnClickListener {
+            val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(galleryIntent, REQUEST_CODE_IMAGE)
+        }
 
         saveButton?.setOnClickListener {
-            val address = addressTextField?.text ?: ""
-            val city = cityTextField?.text ?: ""
+            val address = addressTextField?.editText?.text
+            val city = cityTextField?.editText?.text
             val avatar = selectedImageURI.toString()
+//            this.getImageUri()
+//            val avatar = downloadUrl!!
 
-            val parking = Parking(address.toString(), avatar, city.toString(), false, false, System.currentTimeMillis())
-            Model.instance.addParking(parking) {
-                Navigation.findNavController(it).popBackStack(R.id.parkingLotsFragment, false)
+            if (address?.isNotEmpty() == true && city?.isNotEmpty() == true) {
+                val parking = Parking(address.toString(), avatar, city.toString(), false, false, System.currentTimeMillis())
+                Model.instance.addParking(parking) {
+                    Navigation.findNavController(it).popBackStack(R.id.parkingLotsFragment, false)
+                }
+            } else {
+
+                val errorMessage = if (address?.isNotEmpty() == true) { "city name" }
+                                else if (city?.isNotEmpty() ==  true) { "address" }
+                                else { "address and city name" }
+                showErrorParkingSpotDialog(errorMessage)
             }
+
         }
 
         cancelButton?.setOnClickListener {
@@ -100,30 +111,33 @@ class AddParkingFragment : Fragment() {
         }
     }
 
-    private fun dispatchTakePictureIntent() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (takePictureIntent.resolveActivity(requireActivity().packageManager) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-        } else {
-            Log.d("YourFragment", "Button Clicked") // Add log statement to check if the button is clicked
+    private fun getImageUri() {
+        val imageRef = storageRef.child("images/${UUID.randomUUID()}.jpg")
+        val uploadTask = imageRef.putFile(selectedImageURI!!) // imageUri is the URI of the image to upload
 
+        uploadTask.addOnCompleteListener { task ->
+            imageRef.downloadUrl.addOnCompleteListener{
+                downloadUrl = uploadTask.result.toString()
+            }
         }
-
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    private fun showErrorParkingSpotDialog(textMessage: String) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Error saving your parking spot")
+            .setMessage("Please enter $textMessage")
 
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as? Bitmap
-            parkingImageField?.setImageBitmap(imageBitmap)
+        builder.setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
         }
 
-//        OPEN GALLERY CODE:
-//        if (requestCode == REQUEST_CODE_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
-//            selectedImageURI = data.data
-//            parkingImageField?.setImageURI(selectedImageURI)
-//        }
-
-
+        val alertDialog: AlertDialog = builder.create()
+        alertDialog.show()
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_CODE_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
+            selectedImageURI = data.data
+            parkingImageField?.setImageURI(selectedImageURI)
+        }
     }
 }

@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Reload successful!", Toast.LENGTH_SHORT).show()
             } else {
                 Log.e(ContentValues.TAG, "reload", task.exception)
-                Toast.makeText(this, "Failed to reload user.", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this, "Failed to reload user.", Toast.LENGTH_SHORT).show()
             }
         }
     }

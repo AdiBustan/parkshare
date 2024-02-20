@@ -87,6 +87,7 @@ class ParkingLotsViewHolder(val itemView: View,
             .error(R.drawable.parking_icon)
             .into(parkingAvatarImageView)
 
+
         parkingCheckBox?.apply {
             if (parking?.isUnavailable == true) {
                 text = "unavailable"

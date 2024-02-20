@@ -12,6 +12,7 @@ import com.example.parkshare_new.R
 import com.example.parkshare_new.HomepageActivity
 import com.example.parkshare_new.databinding.ActivityMainBinding
 import com.example.parkshare_new.databinding.ActivitySigninBinding
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -20,10 +21,10 @@ import com.google.firebase.ktx.Firebase
 
 public class SigninActivity : AppCompatActivity() {
 
-    var nameTextField: EditText? = null
-    var CityTextField: EditText? = null
-    var emailField: EditText? = null
-    var passwordField: EditText? = null
+    var nameTextField: TextInputLayout? = null
+    var CityTextField: TextInputLayout? = null
+    var emailField: TextInputLayout? = null
+    var passwordField: TextInputLayout? = null
     var saveButton: Button? = null
     var cancelButton: Button? = null
 
@@ -49,7 +50,7 @@ public class SigninActivity : AppCompatActivity() {
         cancelButton = binding.btnCancelSignin
 
         saveButton?.setOnClickListener {
-            createAccount(emailField?.text.toString(), passwordField?.text.toString())
+            createAccount(emailField?.editText?.text.toString(), passwordField?.editText?.text.toString())
         }
 
         cancelButton?.setOnClickListener {

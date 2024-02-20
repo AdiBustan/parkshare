@@ -66,7 +66,7 @@ class ParkingLotsFragment : Fragment() {
                 Log.i("TAG", "ParkingLotsRecyclerAdapter: position clicked on: $position")
                 val parking = parkingLots?.get(position)
                 parking?.let {
-                    val action = ParkingLotsFragmentDirections.actionParkingLotsFragmentToParkingFragment(it.address)
+                    val action = ParkingLotsFragmentDirections.actionParkingLotsFragmentToParkingFragment(it.address, it.city, it.avatar)
                     Navigation.findNavController(view).navigate(action)
                 }
             }
