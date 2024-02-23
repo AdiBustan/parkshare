@@ -12,6 +12,7 @@ import com.example.parkshare_new.R
 import com.example.parkshare_new.HomepageActivity
 import com.example.parkshare_new.databinding.ActivityMainBinding
 import com.example.parkshare_new.databinding.ActivitySigninBinding
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -20,10 +21,10 @@ import com.google.firebase.ktx.Firebase
 
 public class SigninActivity : AppCompatActivity() {
 
-    var nameTextField: EditText? = null
-    var CityTextField: EditText? = null
-    var emailField: EditText? = null
-    var passwordField: EditText? = null
+    var nameTextField: TextInputLayout? = null
+    var CityTextField: TextInputLayout? = null
+    var emailField: TextInputLayout? = null
+    var passwordField: TextInputLayout? = null
     var saveButton: Button? = null
     var cancelButton: Button? = null
 
@@ -41,15 +42,15 @@ public class SigninActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        nameTextField = binding.ptNameSignin //findViewById(R.id.signinNameVal)
-        CityTextField = binding.ptCitySignin //findViewById(R.id.sininCityVal)
-        emailField = binding.signinEmailVal //findViewById(R.id.signinEmailVal)
-        passwordField = binding.signinPasswordVal  //findViewById(R.id.signinPasswordVal)
-        saveButton = binding.btnSaveSignin //findViewById(R.id.btnSaveSignin)
-        cancelButton = binding.btnCancelSignin //findViewById(R.id.btnCancelSignin)
+        nameTextField = binding.ptNameSignin
+        CityTextField = binding.ptCitySignin
+        emailField = binding.signinEmailVal
+        passwordField = binding.signinPasswordVal
+        saveButton = binding.btnSaveSignin
+        cancelButton = binding.btnCancelSignin
 
         saveButton?.setOnClickListener {
-            createAccount(emailField?.text.toString(), passwordField?.text.toString())
+            createAccount(emailField?.editText?.text.toString(), passwordField?.editText?.text.toString())
         }
 
         cancelButton?.setOnClickListener {
@@ -77,10 +78,10 @@ public class SigninActivity : AppCompatActivity() {
                         "Authentication failed.",
                         Toast.LENGTH_SHORT,
                     ).show()
-                    //updateUI(null)
+                    updateUI(null)
 
-                    //val intent = Intent(this, MainActivity::class.java)
-                    //startActivity(intent)
+//                    val intent = Intent(this, MainActivity::class.java)
+//                    startActivity(intent)
                 }
             }
     }
