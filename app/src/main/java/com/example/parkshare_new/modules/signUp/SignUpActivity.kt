@@ -1,4 +1,4 @@
-package com.example.parkshare_new.modules.signUp;
+package com.example.parkshare_new.modules.signin;
 
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -14,6 +14,9 @@ import com.example.parkshare_new.dao.UserDao
 import com.example.parkshare_new.dao.UserDatabase
 import com.example.parkshare_new.databinding.ActivitySignupBinding
 import com.example.parkshare_new.models.LocalUser
+import com.example.parkshare_new.databinding.ActivityMainBinding
+import com.example.parkshare_new.databinding.ActivitySigninBinding
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -26,10 +29,10 @@ import java.time.LocalDate
 
 public class signUpActivity : AppCompatActivity() {
 
-    var nameTextField: EditText? = null
-    var CityTextField: EditText? = null
-    var emailField: EditText? = null
-    var passwordField: EditText? = null
+    var nameTextField: TextInputLayout? = null
+    var CityTextField: TextInputLayout? = null
+    var emailField: TextInputLayout? = null
+    var passwordField: TextInputLayout? = null
     var saveButton: Button? = null
     var cancelButton: Button? = null
     var database: UserDatabase? = null
@@ -59,7 +62,7 @@ public class signUpActivity : AppCompatActivity() {
         cancelButton = binding.btnCancelsignUp //findViewById(R.id.btnCancelsignUp)
 
         saveButton?.setOnClickListener {
-            createAccount(emailField?.text.toString(), passwordField?.text.toString())
+            createAccount(emailField?.editText?.text.toString(), passwordField?.editText?.text.toString())
         }
 
         cancelButton?.setOnClickListener {
@@ -94,10 +97,10 @@ public class signUpActivity : AppCompatActivity() {
                         "Authentication failed.",
                         Toast.LENGTH_SHORT,
                     ).show()
-                    //updateUI(null)
+                    updateUI(null)
 
-                    //val intent = Intent(this, MainActivity::class.java)
-                    //startActivity(intent)
+//                    val intent = Intent(this, MainActivity::class.java)
+//                    startActivity(intent)
                 }
             }
     }

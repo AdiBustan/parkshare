@@ -39,6 +39,12 @@
         <argument
             android:name="ADDRESS"
             app:argType="string" />
+        <argument
+            android:name="CITY"
+            app:argType="string" />
+        <argument
+            android:name="AVATAR"
+            app:argType="string" />
     </fragment>
     <action
         android:id="@+id/action_global_userProfileFragment"
