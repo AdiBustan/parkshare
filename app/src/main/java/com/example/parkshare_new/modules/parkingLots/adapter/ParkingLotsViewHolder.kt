@@ -1,11 +1,13 @@
 package com.example.parkshare_new.modules.parkingLots.adapter
 
 import android.app.AlertDialog
+import android.graphics.BitmapFactory
 import android.util.Log
 import android.view.View
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,10 +17,13 @@ import com.example.parkshare_new.HomepageActivity
 import com.example.parkshare_new.models.Model
 import com.example.parkshare_new.models.Parking
 import com.example.parkshare_new.modules.parkingLots.RemoveParkingFragment
+import com.google.firebase.storage.FirebaseStorage
+import java.io.File
 
-class ParkingLotsViewHolder(val itemView: View,
-                            val listener: HomepageActivity.OnItemClickListener?,
-                            var parkingLots: List<Parking>?): RecyclerView.ViewHolder(itemView) {
+class ParkingLotsViewHolder(
+    itemView: View,
+    val listener: HomepageActivity.OnItemClickListener?,
+    var parkingLots: List<Parking>?): RecyclerView.ViewHolder(itemView) {
 
     var parkingAddressTextView : TextView? = null
     var parkingCityTextView: TextView? = null
@@ -81,12 +86,7 @@ class ParkingLotsViewHolder(val itemView: View,
         parkingAddressTextView?.text = parking?.address
         parkingCityTextView?.text = parking?.city
 
-        Glide.with(itemView.context)
-            .load(parking?.avatar)
-            .placeholder(R.drawable.loading)
-            .error(R.drawable.parking_icon)
-            .into(parkingAvatarImageView)
-
+        loadingImageFromStorage(parking?.avatar)
 
         parkingCheckBox?.apply {
             if (parking?.isUnavailable == true) {
@@ -97,6 +97,26 @@ class ParkingLotsViewHolder(val itemView: View,
             } else {
                 isChecked = false
             }
+        }
+    }
+
+    private fun loadingImageFromStorage(imageName: String?) {
+        if (imageName?.isNotEmpty() == true) {
+            val storageReference = FirebaseStorage.getInstance().reference.child("/images/$imageName")
+
+            val localFile = File.createTempFile("tempImage", "jpg")
+            storageReference.getFile(localFile).addOnSuccessListener {
+                val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
+                parkingAvatarImageView.setImageBitmap(bitmap)
+
+            }.addOnFailureListener {
+                Log.d("Tag", "Faild To Load Image ")
+            }
+        } else {
+            Glide.with(itemView.context)
+                .load(R.drawable.parking_icon)
+                .placeholder(R.drawable.loading)
+                .into(parkingAvatarImageView)
         }
     }
 }

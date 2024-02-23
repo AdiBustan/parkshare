@@ -78,10 +78,10 @@ public class SigninActivity : AppCompatActivity() {
                         "Authentication failed.",
                         Toast.LENGTH_SHORT,
                     ).show()
-                    //updateUI(null)
+                    updateUI(null)
 
-                    //val intent = Intent(this, MainActivity::class.java)
-                    //startActivity(intent)
+//                    val intent = Intent(this, MainActivity::class.java)
+//                    startActivity(intent)
                 }
             }
     }

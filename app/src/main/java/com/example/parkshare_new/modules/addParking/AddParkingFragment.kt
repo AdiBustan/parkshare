@@ -32,11 +32,14 @@ import com.example.parkshare_new.models.Model
 import com.example.parkshare_new.models.Parking
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.tasks.await
 import java.net.URI
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import java.util.UUID
 
-@Suppress("DEPRECATION")
 class AddParkingFragment : Fragment() {
 
     private var parkingImageField: ImageView? = null
@@ -46,6 +49,7 @@ class AddParkingFragment : Fragment() {
     private var saveButton: Button? = null
     private var cancelButton: Button? = null
 
+    private var fileName: String = ""
     private var selectedImageURI: Uri? = null
     private var downloadUrl: String? = null
     private var _binding: FragmentAddParkingBinding? = null
@@ -87,9 +91,10 @@ class AddParkingFragment : Fragment() {
         saveButton?.setOnClickListener {
             val address = addressTextField?.editText?.text
             val city = cityTextField?.editText?.text
-            val avatar = selectedImageURI.toString()
-//            this.getImageUri()
-//            val avatar = downloadUrl!!
+            if (selectedImageURI != null) {
+                this.uploadToStorage()
+            }
+            val avatar = fileName
 
             if (address?.isNotEmpty() == true && city?.isNotEmpty() == true) {
                 val parking = Parking(address.toString(), avatar, city.toString(), false, false, System.currentTimeMillis())
@@ -97,13 +102,11 @@ class AddParkingFragment : Fragment() {
                     Navigation.findNavController(it).popBackStack(R.id.parkingLotsFragment, false)
                 }
             } else {
-
                 val errorMessage = if (address?.isNotEmpty() == true) { "city name" }
                                 else if (city?.isNotEmpty() ==  true) { "address" }
                                 else { "address and city name" }
                 showErrorParkingSpotDialog(errorMessage)
             }
-
         }
 
         cancelButton?.setOnClickListener {
@@ -111,14 +114,17 @@ class AddParkingFragment : Fragment() {
         }
     }
 
-    private fun getImageUri() {
-        val imageRef = storageRef.child("images/${UUID.randomUUID()}.jpg")
-        val uploadTask = imageRef.putFile(selectedImageURI!!) // imageUri is the URI of the image to upload
+    private fun uploadToStorage() {
+        val formatter = SimpleDateFormat("yyyy_MM_dd_hh_mm_ss", Locale.FRANCE)
+        val now = Date()
+        fileName = formatter.format(now)
+        val storageReference = FirebaseStorage.getInstance().getReference("images/$fileName")
 
-        uploadTask.addOnCompleteListener { task ->
-            imageRef.downloadUrl.addOnCompleteListener{
-                downloadUrl = uploadTask.result.toString()
-            }
+        storageReference.putFile(selectedImageURI!!).
+                addOnSuccessListener {
+                    //binding.imParkingImageAddParking.setImageURI(null)
+                    //val storageRef = FirebaseStorage.getInstance().reference.child("images/$fileName")
+                }.addOnFailureListener {
         }
     }
 
@@ -134,6 +140,7 @@ class AddParkingFragment : Fragment() {
         val alertDialog: AlertDialog = builder.create()
         alertDialog.show()
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_CODE_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
             selectedImageURI = data.data
