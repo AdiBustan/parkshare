@@ -19,7 +19,7 @@
         app:srcCompat="@drawable/logo" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ptNameSignin"
+        android:id="@+id/ptNamesignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -39,7 +39,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ptCitySignin"
+        android:id="@+id/ptCitysignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -51,7 +51,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ptNameSignin">
+        app:layout_constraintTop_toBottomOf="@+id/ptNamesignUp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="370dp"
@@ -59,7 +59,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/signinEmailVal"
+        android:id="@+id/signUpEmailVal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -71,7 +71,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ptCitySignin">
+        app:layout_constraintTop_toBottomOf="@+id/ptCitysignUp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="370dp"
@@ -79,7 +79,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/signinPasswordVal"
+        android:id="@+id/signUpPasswordVal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -91,7 +91,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.04"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signinEmailVal">
+        app:layout_constraintTop_toBottomOf="@+id/signUpEmailVal">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="370dp"
@@ -99,7 +99,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/btnCancelSignin"
+        android:id="@+id/btnCancelsignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -109,10 +109,10 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signinPasswordVal" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpPasswordVal" />
 
     <Button
-        android:id="@+id/btnSaveSignin"
+        android:id="@+id/btnSavesignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -122,7 +122,7 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signinPasswordVal" />
+        app:layout_constraintTop_toBottomOf="@+id/signUpPasswordVal" />
 
 
 

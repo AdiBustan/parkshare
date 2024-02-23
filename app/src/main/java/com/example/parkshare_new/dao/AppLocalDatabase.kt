@@ -1,30 +1,29 @@
 package com.example.parkshare_new.dao
 
+import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.parkshare_new.base.MyApplication
-import com.example.parkshare_new.models.Parking
+import com.example.parkshare_new.models.LocalUser
 
-@Database(entities = [Parking::class], version = 1)
-abstract class AppLocalDbRepository : RoomDatabase() {
-    abstract fun parkingDao(): ParkingDao
-}
+@Database(entities = [LocalUser::class], version = 1, exportSchema = false)
+abstract class UserDatabase : RoomDatabase() {
+    abstract fun userDao(): UserDao
 
-object AppLocalDatabase {
+    companion object {
+        @Volatile
+        private var INSTANCE: UserDatabase? = null
 
-    val db: AppLocalDbRepository by lazy {
-
-        val context = MyApplication.Globals.appContext
-            ?: throw IllegalStateException("Application context not available")
-
-        Room.databaseBuilder(
-            context,
-            AppLocalDbRepository::class.java,
-            "dbFileName.db"
-        )
-            .fallbackToDestructiveMigration()
-            .build()
+        fun getInstance(context: Context): UserDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    UserDatabase::class.java,
+                    "user_database"
+                ).build()
+                INSTANCE = instance
+                instance
+            }
+        }
     }
-
 }

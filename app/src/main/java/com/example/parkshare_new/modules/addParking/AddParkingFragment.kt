@@ -24,17 +24,23 @@ import android.widget.EditText
 import android.widget.ImageView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
 import com.example.parkshare_new.R
+import com.example.parkshare_new.dao.UserDatabase
 import com.example.parkshare_new.databinding.FragmentAddParkingBinding
 import com.example.parkshare_new.databinding.FragmentParkingBinding
+import com.example.parkshare_new.models.LocalUser
 import com.example.parkshare_new.models.Model
 import com.example.parkshare_new.models.Parking
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.tasks.await
 import java.net.URI
+import kotlin.math.log
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -53,6 +59,10 @@ class AddParkingFragment : Fragment() {
     private var selectedImageURI: Uri? = null
     private var downloadUrl: String? = null
     private var _binding: FragmentAddParkingBinding? = null
+
+    private var database: UserDatabase? = null
+    private var currUser: LocalUser? = null
+
     private val binding get() = _binding!!
 
     val storage = FirebaseStorage.getInstance()
@@ -70,6 +80,12 @@ class AddParkingFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentAddParkingBinding.inflate(inflater, container, false)
         val view = binding.root
+        database = UserDatabase.getInstance(requireContext().applicationContext)
+        lifecycleScope.launch(Dispatchers.IO)  {
+            val userDao = database!!.userDao()
+            currUser = userDao.getUser()
+        }
+
         setupUI()
 
         return view
@@ -77,11 +93,11 @@ class AddParkingFragment : Fragment() {
 
     private fun setupUI() {
         parkingImageField = binding.imParkingImageAddParking
-        addressTextField = binding.ptAddressAddParking //view.findViewById(R.id.signinNameVal)
+        addressTextField = binding.ptAddressAddParking //view.findViewById(R.id.signUpNameVal)
         cityTextField = binding.ptCityAddParking //view.findViewById(R.id.sininCityVal)
         uploadImageButton = binding.btnUploadImageAddParking
-        saveButton = binding.btnSaveAddParking //view.findViewById(R.id.btnSaveSignin)
-        cancelButton = binding.btnCancelAddParking //view.findViewById(R.id.btnCancelSignin)
+        saveButton = binding.btnSaveAddParking //view.findViewById(R.id.btnSavesignUp)
+        cancelButton = binding.btnCancelAddParking //view.findViewById(R.id.btnCancelsignUp)
 
         uploadImageButton?.setOnClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -97,7 +113,7 @@ class AddParkingFragment : Fragment() {
             val avatar = fileName
 
             if (address?.isNotEmpty() == true && city?.isNotEmpty() == true) {
-                val parking = Parking(address.toString(), avatar, city.toString(), false, false, System.currentTimeMillis())
+                val parking = Parking(address.toString(), avatar, city.toString(), currUser!!.email, false, false, System.currentTimeMillis())
                 Model.instance.addParking(parking) {
                     Navigation.findNavController(it).popBackStack(R.id.parkingLotsFragment, false)
                 }

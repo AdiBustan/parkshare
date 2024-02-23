@@ -10,7 +10,7 @@ import android.widget.Button
 import android.widget.Toast
 import com.example.parkshare_new.databinding.ActivityMainBinding
 import com.example.parkshare_new.modules.login.LoginActivity
-import com.example.parkshare_new.modules.signin.SigninActivity
+import com.example.parkshare_new.modules.signUp.signUpActivity
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -29,10 +29,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val signinButton : Button = binding.SigninButton //findViewById(R.id.SigninButton)
-        val loginButton : Button = findViewById(R.id.alreadySignButton)
+        val signUpButton : Button = binding.signUpButton
+        val loginButton : Button = binding.alreadySignButton
 
-        signinButton.setOnClickListener(::onSigninBottonClicked)
+        signUpButton.setOnClickListener(::onSignUpButtonClicked)
         loginButton.setOnClickListener(::onLoginPageButtonClicked)
     }
 
@@ -59,8 +59,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun onSigninBottonClicked(view: View) {
-        val intent = Intent(this, SigninActivity::class.java)
+    private fun onSignUpButtonClicked(view: View) {
+        val intent = Intent(this, signUpActivity::class.java)
         startActivity(intent)
     }
 

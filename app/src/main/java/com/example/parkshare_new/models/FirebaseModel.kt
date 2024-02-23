@@ -1,6 +1,7 @@
 package com.example.parkshare_new.models
 
 import android.location.Address
+import android.util.Log
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestoreSettings
 import com.google.firebase.firestore.ktx.firestore
@@ -35,6 +36,25 @@ class FirebaseModel {
                 false -> callback(listOf())
             }
         }
+    }
+
+    fun getAllParkingLotsByUser(email: String, callback: (List<Parking>) -> Unit) {
+
+        val query = db.collection(PARKING_LOTS_COLLECTION_PATH).whereEqualTo("owner", email)
+
+        query.get()
+            .addOnSuccessListener { querySnapshot ->
+                val filteredPosts : MutableList<Parking> = mutableListOf()
+                for (document in querySnapshot.documents) {
+                    val post = document.toObject(Parking::class.java)!!
+                    filteredPosts.add(post)
+                }
+
+            }
+            .addOnFailureListener { exception ->
+                // Handle errors
+                Log.w("Firebase", "Error getting documents: $exception")
+            }
     }
 
     fun addParking(parking: Parking, callback: () -> Unit) {
