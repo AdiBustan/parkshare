@@ -1,4 +1,4 @@
-package com.example.parkshare_new.modules.signin;
+package com.example.parkshare_new.modules.signUp;
 
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -14,8 +14,6 @@ import com.example.parkshare_new.dao.UserDao
 import com.example.parkshare_new.dao.UserDatabase
 import com.example.parkshare_new.databinding.ActivitySignupBinding
 import com.example.parkshare_new.models.LocalUser
-import com.example.parkshare_new.databinding.ActivityMainBinding
-import com.example.parkshare_new.databinding.ActivitySigninBinding
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -23,8 +21,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.sql.Timestamp
-import java.time.LocalDate
 
 
 public class signUpActivity : AppCompatActivity() {
@@ -54,11 +50,11 @@ public class signUpActivity : AppCompatActivity() {
     }
 
     private fun setupUI() {
-        nameTextField = binding.ptNamesignUp //findViewById(R.id.signUpNameVal)
-        CityTextField = binding.ptCitysignUp //findViewById(R.id.sininCityVal)
-        emailField = binding.signUpEmailVal //findViewById(R.id.signUpEmailVal)
-        passwordField = binding.signUpPasswordVal  //findViewById(R.id.signUpPasswordVal)
-        saveButton = binding.btnSavesignUp //findViewById(R.id.btnSavesignUp)
+        nameTextField = binding.ptNamesignUp
+        CityTextField = binding.ptCitysignUp
+        emailField = binding.signUpEmailVal
+        passwordField = binding.signUpPasswordVal
+        saveButton = binding.btnSavesignUp
         cancelButton = binding.btnCancelsignUp //findViewById(R.id.btnCancelsignUp)
 
         saveButton?.setOnClickListener {

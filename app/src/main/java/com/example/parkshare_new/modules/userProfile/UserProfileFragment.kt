@@ -45,20 +45,20 @@ class UserProfileFragment : Fragment() {
         //set the layout manager and adapter
         parkingLotsRecyclerView?.layoutManager = LinearLayoutManager(context)
 
-        adapter?.listener = object : HomepageActivity.OnItemClickListener {
-            override fun onItemClick(position: Int) {
-                Log.i("TAG", "ParkingLotsRecyclerAdapter: position clicked on: $position")
-                val parking = parkingLots?.get(position)
-                parking?.let {
-                    val action = ParkingLotsFragmentDirections.actionParkingLotsFragmentToParkingFragment(it.address)
-                    Navigation.findNavController(view).navigate(action)
-                }
-            }
-
-            override fun onParkingClicked(parking: Parking?) {
-                Log.i("TAG", "PARKING: $parking")
-            }
-        }
+//        adapter?.listener = object : HomepageActivity.OnItemClickListener {
+//            override fun onItemClick(position: Int) {
+//                Log.i("TAG", "ParkingLotsRecyclerAdapter: position clicked on: $position")
+//                val parking = parkingLots?.get(position)
+//                parking?.let {
+//                    val action = ParkingLotsFragmentDirections.actionParkingLotsFragmentToParkingFragment(it.address, it.city, it.avatar)
+//                    Navigation.findNavController(view).navigate(action)
+//                }
+//            }
+//
+//            override fun onParkingClicked(parking: Parking?) {
+//                Log.i("TAG", "PARKING: $parking")
+//            }
+//        }
 
         parkingLotsRecyclerView?.adapter = adapter
 
