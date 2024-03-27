@@ -13,6 +13,7 @@ import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.example.parkshare_new.R
 import com.example.parkshare_new.databinding.FragmentParkingBinding
+import com.example.parkshare_new.services.ImagesService
 
 class ParkingFragment : Fragment() {
 
@@ -47,11 +48,12 @@ class ParkingFragment : Fragment() {
 
         addressTextView?.text = address
         cityTextView?.text = city
-        Glide.with(requireContext())
-            .load(avatar)
-            .placeholder(R.drawable.loading)
-            .error(R.drawable.loading)
-            .into(avatarImageView)
+        ImagesService.loadingImageFromStorage(requireContext(), avatarImageView, avatar)
+//        Glide.with(requireContext())
+//            .load(avatar)
+//            .placeholder(R.drawable.loading)
+//            .error(R.drawable.loading)
+//            .into(avatarImageView)
         return view
     }
 
