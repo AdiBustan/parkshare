@@ -17,6 +17,7 @@ import com.example.parkshare_new.HomepageActivity
 import com.example.parkshare_new.models.Model
 import com.example.parkshare_new.models.Parking
 import com.example.parkshare_new.modules.parkingLots.RemoveParkingFragment
+import com.example.parkshare_new.services.ImagesService
 import com.google.firebase.storage.FirebaseStorage
 import java.io.File
 
@@ -25,7 +26,7 @@ class ParkingLotsViewHolder(
     val listener: HomepageActivity.OnItemClickListener?,
     var parkingLots: List<Parking>?): RecyclerView.ViewHolder(itemView) {
 
-    var parkingAddressTextView : TextView? = null
+    var parkingAddressTextView: TextView? = null
     var parkingCityTextView: TextView? = null
     var parkingAvatarImageView: ImageView
     var parkingCheckBox: CheckBox? = null
@@ -46,7 +47,7 @@ class ParkingLotsViewHolder(
             }
         }
 
-        itemView.setOnClickListener{
+        itemView.setOnClickListener {
             Log.i("TAG", "ParkingLotsViewHolder: position clicked: $adapterPosition")
             listener?.onItemClick(adapterPosition)
             listener?.onParkingClicked(parking)
@@ -86,7 +87,7 @@ class ParkingLotsViewHolder(
         parkingAddressTextView?.text = parking?.address
         parkingCityTextView?.text = parking?.city
 
-        loadingImageFromStorage(parking?.avatar)
+        ImagesService.loadingImageFromStorage(itemView.context, parkingAvatarImageView, parking?.avatar)
 
         parkingCheckBox?.apply {
             if (parking?.isUnavailable == true) {
@@ -97,26 +98,6 @@ class ParkingLotsViewHolder(
             } else {
                 isChecked = false
             }
-        }
-    }
-
-    private fun loadingImageFromStorage(imageName: String?) {
-        if (imageName?.isNotEmpty() == true) {
-            val storageReference = FirebaseStorage.getInstance().reference.child("/images/$imageName")
-
-            val localFile = File.createTempFile("tempImage", "jpg")
-            storageReference.getFile(localFile).addOnSuccessListener {
-                val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
-                parkingAvatarImageView.setImageBitmap(bitmap)
-
-            }.addOnFailureListener {
-                Log.d("Tag", "Faild To Load Image ")
-            }
-        } else {
-            Glide.with(itemView.context)
-                .load(R.drawable.parking_icon)
-                .placeholder(R.drawable.loading)
-                .into(parkingAvatarImageView)
         }
     }
 }
