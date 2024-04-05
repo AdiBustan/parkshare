@@ -26,7 +26,7 @@ interface ParkingDao {
     fun getParkingByUser(owner: String) : Parking
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(vararg parkingLots: Parking)
+    fun insert(vararg parkingSpots: Parking)
 
     @Delete
     fun delete(parking: Parking)

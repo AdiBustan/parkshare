@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".modules.parkingLots.ParkingLotsFragment">
+    tools:context=".modules.parkingSpots.ParkingSpotsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvParkingLotsFragmentList"
+        android:id="@+id/rvParkingSpotsFragmentList"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -18,7 +18,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
-        android:id="@+id/btnParkingLotsFragmentAdd"
+        android:id="@+id/btnParkingSpotsFragmentAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
@@ -35,18 +35,18 @@
         android:layout_height="wrap_content"
         android:indeterminate="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/rvParkingLotsFragmentList"
+        app:layout_constraintEnd_toEndOf="@+id/rvParkingSpotsFragmentList"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/rvParkingLotsFragmentList" />
+        app:layout_constraintTop_toTopOf="@+id/rvParkingSpotsFragmentList" />
 
     <TextView
-        android:id="@+id/tvNoParkingParkingLotsFragment"
+        android:id="@+id/tvNoParkingParkingSpotsFragment"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginTop="200dp"
         android:layout_marginBottom="300dp"
         android:gravity="center"
-        android:text="There Are No Available Parking Lots"
+        android:text="There Are No Available Parking Spots"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

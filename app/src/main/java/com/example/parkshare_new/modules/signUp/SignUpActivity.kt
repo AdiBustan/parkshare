@@ -1,11 +1,15 @@
 package com.example.parkshare_new.modules.signUp;
 
+import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -14,6 +18,10 @@ import com.example.parkshare_new.dao.UserDao
 import com.example.parkshare_new.dao.UserDatabase
 import com.example.parkshare_new.databinding.ActivitySignupBinding
 import com.example.parkshare_new.models.LocalUser
+import com.example.parkshare_new.models.Model
+import com.example.parkshare_new.models.Profile
+import com.example.parkshare_new.modules.addParking.AddParkingFragment
+import com.example.parkshare_new.services.ImagesService
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -26,13 +34,22 @@ import kotlinx.coroutines.launch
 public class signUpActivity : AppCompatActivity() {
 
     var nameTextField: TextInputLayout? = null
-    var CityTextField: TextInputLayout? = null
+    var faveCityTextField: TextInputLayout? = null
+    var avatarImageView: ImageView? = null
     var emailField: TextInputLayout? = null
     var passwordField: TextInputLayout? = null
+    var uploadImageButton: Button? = null
     var saveButton: Button? = null
     var cancelButton: Button? = null
+
+    var email: String = ""
+    var username: String = ""
+    var faveCity: String = ""
+    var avatar: String = ""
+
     var database: UserDatabase? = null
     var userDao: UserDao? = null
+    private var selectedImageURI: Uri? = null
 
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: ActivitySignupBinding
@@ -45,20 +62,36 @@ public class signUpActivity : AppCompatActivity() {
 
         setContentView(binding.root)
         auth = Firebase.auth
-
         setupUI()
     }
 
     private fun setupUI() {
         nameTextField = binding.ptNamesignUp
-        CityTextField = binding.ptCitysignUp
+        faveCityTextField = binding.ptCitysignUp
+        avatarImageView = binding.imAvatarSignup
         emailField = binding.signUpEmailVal
         passwordField = binding.signUpPasswordVal
+
+        uploadImageButton = binding.btnUploadImageSignup
         saveButton = binding.btnSavesignUp
-        cancelButton = binding.btnCancelsignUp //findViewById(R.id.btnCancelsignUp)
+        cancelButton = binding.btnCancelsignUp
+
+        uploadImageButton?.setOnClickListener {
+            val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(galleryIntent, AddParkingFragment.REQUEST_CODE_IMAGE)
+        }
 
         saveButton?.setOnClickListener {
-            createAccount(emailField?.editText?.text.toString(), passwordField?.editText?.text.toString())
+            email = emailField?.editText?.text.toString()
+            username = nameTextField?.editText?.text.toString()
+            faveCity = faveCityTextField?.editText?.text.toString()
+
+            if (selectedImageURI != null) {
+                avatar = ImagesService.uploadImageToStorage(selectedImageURI!!)
+            }
+
+            createAccount(passwordField?.editText?.text.toString())
+            saveToFireStore()
         }
 
         cancelButton?.setOnClickListener {
@@ -66,7 +99,7 @@ public class signUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun createAccount(email : String, password : String) {
+    private fun createAccount(password : String) {
 
         // Sign Up
         auth.createUserWithEmailAndPassword(email, password)
@@ -78,12 +111,9 @@ public class signUpActivity : AppCompatActivity() {
 
                     lifecycleScope.launch(Dispatchers.IO) {
                         Log.i("LocalStorage", "Start to save new user on local data")
-                        userDao!!.insertUser(LocalUser(email = email, timestamp = System.currentTimeMillis()))
+                        userDao!!.insertUser(LocalUser(email, username, faveCity, avatar, System.currentTimeMillis()))
                         Log.i("LocalStorage", "save local user successfully, email: $email")
                     }
-
-                    // Update UI or do something with the user information
-                    updateUI(user)
 
                 } else {
                     // If sign up fails, display a message to the user.
@@ -93,16 +123,24 @@ public class signUpActivity : AppCompatActivity() {
                         "Authentication failed.",
                         Toast.LENGTH_SHORT,
                     ).show()
-                    updateUI(null)
-
-//                    val intent = Intent(this, MainActivity::class.java)
-//                    startActivity(intent)
                 }
             }
     }
 
-    private fun updateUI(user :FirebaseUser?) {
-        val intent = Intent(this, HomepageActivity::class.java)
-        startActivity(intent)
+    private fun saveToFireStore() {
+        val profile = Profile(email, username, faveCity, avatar, listOf())
+        Model.instance.addUser(profile) {
+            val intent = Intent(this, HomepageActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == AddParkingFragment.REQUEST_CODE_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
+            selectedImageURI = data.data
+            avatarImageView?.setImageURI(selectedImageURI)
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }

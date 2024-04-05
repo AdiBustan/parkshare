@@ -4,74 +4,141 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.Navigation
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.parkshare_new.HomepageActivity
 import com.example.parkshare_new.R
+import com.example.parkshare_new.dao.UserDao
 import com.example.parkshare_new.dao.UserDatabase
+import com.example.parkshare_new.databinding.FragmentUserProfileBinding
+import com.example.parkshare_new.models.LocalUser
 import com.example.parkshare_new.models.Model
 import com.example.parkshare_new.models.Parking
-import com.example.parkshare_new.modules.parkingLots.ParkingLotsFragmentDirections
-import com.example.parkshare_new.modules.parkingLots.adapter.ParkingLotsRecyclerAdapter
+import com.example.parkshare_new.models.Profile
+import com.example.parkshare_new.modules.parkingSpots.adapter.ParkingSpotsRecyclerAdapter
+import com.example.parkshare_new.services.ImagesService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class UserProfileFragment : Fragment() {
-    var parkingLotsRecyclerView: RecyclerView? = null
-    var parkingLots: List<Parking>? = null
-    var adapter : ParkingLotsRecyclerAdapter? = null
-    val database = UserDatabase.getInstance(requireContext().applicationContext)
-    val userDao = database.userDao()
-    private val currUser = userDao.getUser()
+
+    var userParkingSpotsRecyclerView: RecyclerView? = null
+    private var usernameTextView: TextView? = null
+    private var faveCityTextView: TextView? = null
+    private var avatarImageView: ImageView? = null
+
+    var adapter : ParkingSpotsRecyclerAdapter? = null
+    var userParkingSpots: List<Parking>? = null
+    private var database: UserDatabase? = null
+    private var userDao: UserDao? = null
+    private var currUser: LocalUser? = null
+    private var _binding: FragmentUserProfileBinding? = null
+    private val binding get() = _binding!!
+
+
+    interface OnItemClickListener {
+        fun onParkingClick(parking: Parking?)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_user_profile, container, false)
-        adapter = ParkingLotsRecyclerAdapter(parkingLots)
+    ): View {
 
-        Model.instance.getAllParkingLotsPerUser(currUser.email) {
-            this.parkingLots = parkingLots
-            adapter?.parkingLots = parkingLots
-            adapter?.notifyDataSetChanged()
+        _binding = FragmentUserProfileBinding.inflate(inflater, container, false)
+        val view = binding.root
+        adapter = ParkingSpotsRecyclerAdapter(userParkingSpots)
+
+        database = UserDatabase.getInstance(requireContext().applicationContext)
+        lifecycleScope.launch(Dispatchers.IO)  {
+            userDao = database!!.userDao()
+            currUser = userDao!!.getUser()
+
+            withContext(Dispatchers.Main) {
+                // Call setupUI() after currUser is retrieved and logged
+                setupUI()
+            }
         }
 
-        parkingLotsRecyclerView = view.findViewById(R.id.nPostsTxt)
-        parkingLotsRecyclerView?.setHasFixedSize(true)
+        userParkingSpotsRecyclerView = binding.rvUserParkingSpotsFragmentList
+        userParkingSpotsRecyclerView?.setHasFixedSize(true)
 
-        //set the layout manager and adapter
-        parkingLotsRecyclerView?.layoutManager = LinearLayoutManager(context)
+        userParkingSpotsRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
 
-//        adapter?.listener = object : HomepageActivity.OnItemClickListener {
-//            override fun onItemClick(position: Int) {
-//                Log.i("TAG", "ParkingLotsRecyclerAdapter: position clicked on: $position")
-//                val parking = parkingLots?.get(position)
-//                parking?.let {
-//                    val action = ParkingLotsFragmentDirections.actionParkingLotsFragmentToParkingFragment(it.address, it.city, it.avatar)
-//                    Navigation.findNavController(view).navigate(action)
-//                }
-//            }
-//
-//            override fun onParkingClicked(parking: Parking?) {
-//                Log.i("TAG", "PARKING: $parking")
-//            }
-//        }
+        adapter?.userProfileListener = object : OnItemClickListener {
+            override fun onParkingClick(parking: Parking?) {
+                Log.i("TAG", "PARKING: $parking")
+            }
+        }
 
-        parkingLotsRecyclerView?.adapter = adapter
+        userParkingSpotsRecyclerView?.adapter = adapter
 
         return view
     }
 
-    override fun onResume() {
-        super.onResume()
+    private fun setupUI() {
 
-        // TODO - get the username for send
-        Model.instance.getAllParkingLotsPerUser(currUser.email) { parkingLots ->
-            this.parkingLots = parkingLots
-            adapter?.parkingLots = parkingLots
+        usernameTextView = binding.tvUsernameUserProfileFragment
+        faveCityTextView = binding.tvFaveCityUserProfileFragment
+        avatarImageView = binding.imAvatarUserProfileFragment
+
+        if (currUser!!.username == "") {
+            getUserDetailsFromFirebase()
+        } else {
+            updateUI(currUser!!.username, currUser!!.faveCity, currUser!!.avatar)
+        }
+
+        getUserParkingSpots()
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        var profileBtn = menu.findItem(R.id.miActionBarProfile)
+        var editBtn = menu.findItem(R.id.miActionBarEditProfile)
+
+        profileBtn.isVisible = false
+        editBtn.isVisible = true
+
+        //menu.clear()
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    private fun updateUI(username: String, faveCity: String, avatar: String) {
+        usernameTextView?.text = username
+        faveCityTextView?.text = faveCity
+        ImagesService.loadingImageFromStorage(requireContext(), avatarImageView!!, avatar)
+
+    }
+
+    private fun getUserDetailsFromFirebase() {
+        Model.instance.getUserByEmail(currUser!!.email) {profile ->
+            val localUser = LocalUser(profile!!.email, profile.userName, profile.faveCity, profile.avatar, System.currentTimeMillis())
+
+            lifecycleScope.launch(Dispatchers.IO)  {
+                userDao!!.updateUser(localUser)
+            }
+
+            updateUI(profile.userName, profile.faveCity, profile.avatar)
+        }
+    }
+
+    private fun getUserParkingSpots() {
+        Model.instance.getAllParkingSpotsPerUser(this.currUser!!.email) { parkingSpotsPerUser ->
+            this.userParkingSpots = parkingSpotsPerUser
+            adapter?.parkingSpots = parkingSpotsPerUser
             adapter?.notifyDataSetChanged()
         }
     }

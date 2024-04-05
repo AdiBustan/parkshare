@@ -106,7 +106,7 @@ class AddParkingFragment : Fragment() {
             if (address?.isNotEmpty() == true && chosenCity != "") {
                 val parking = Parking(address.toString(), avatar, chosenCity!!, currUser!!.email, false, false, System.currentTimeMillis())
                 Model.instance.addParking(parking) {
-                    Navigation.findNavController(it).popBackStack(R.id.parkingLotsFragment, false)
+                    Navigation.findNavController(it).popBackStack(R.id.parkingSpotsFragment, false)
                 }
             } else {
                 val errorMessage = if (address?.isNotEmpty() == true) { "city name" }

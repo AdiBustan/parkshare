@@ -1,8 +1,7 @@
-package com.example.parkshare_new.modules.parkingLots
+package com.example.parkshare_new.modules.parkingSpots
 
 import android.os.Bundle
 import android.util.Log
-import android.view.Display.Mode
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,58 +14,56 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.parkshare_new.R
 import com.example.parkshare_new.HomepageActivity
-import com.example.parkshare_new.databinding.FragmentParkingBinding
-import com.example.parkshare_new.databinding.FragmentParkingLotsBinding
+import com.example.parkshare_new.databinding.FragmentParkingSpotsBinding
 import com.example.parkshare_new.models.Model
 import com.example.parkshare_new.models.Parking
-import com.example.parkshare_new.modules.parkingLots.adapter.ParkingLotsRecyclerAdapter
+import com.example.parkshare_new.modules.parkingSpots.adapter.ParkingSpotsRecyclerAdapter
 
-class ParkingLotsFragment : Fragment() {
-    var parkingLotsRecyclerView: RecyclerView? = null
+class ParkingSpotsFragment : Fragment() {
+    var parkingSpotsRecyclerView: RecyclerView? = null
     var progressBar: ProgressBar? = null
     var noParkingsTextView: TextView? = null
-    var parkingLots: List<Parking>? = null
-    var adapter : ParkingLotsRecyclerAdapter? = null
+    var parkingSpots: List<Parking>? = null
+    var adapter : ParkingSpotsRecyclerAdapter? = null
 
-    private var _binding: FragmentParkingLotsBinding? = null
+    private var _binding: FragmentParkingSpotsBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        _binding = FragmentParkingLotsBinding.inflate(inflater, container, false)
+        _binding = FragmentParkingSpotsBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        adapter = ParkingLotsRecyclerAdapter(parkingLots)
+        adapter = ParkingSpotsRecyclerAdapter(parkingSpots)
 
-        noParkingsTextView = binding.tvNoParkingParkingLotsFragment
+        noParkingsTextView = binding.tvNoParkingParkingSpotsFragment
         progressBar = binding.progressBar //view.findViewById(R.id.progressBar)
         progressBar?.visibility = View.VISIBLE
 
 
-        Model.instance.getAllParkingLots { parkingLots ->
-            this.parkingLots = parkingLots
-            adapter?.parkingLots = parkingLots
+        Model.instance.getAllParkingSpots { parkingSpots ->
+            this.parkingSpots = parkingSpots
+            adapter?.parkingSpots = parkingSpots
             adapter?.notifyDataSetChanged()
 
             updateEmptyViewVisibility()
             progressBar?.visibility = View.GONE
         }
 
-        parkingLotsRecyclerView = binding.rvParkingLotsFragmentList //view.findViewById(R.id.rvParkingLotsFragmentList)
-        parkingLotsRecyclerView?.setHasFixedSize(true)
+        parkingSpotsRecyclerView = binding.rvParkingSpotsFragmentList
+        parkingSpotsRecyclerView?.setHasFixedSize(true)
 
         //set the layout manager and adapter
-        parkingLotsRecyclerView?.layoutManager = LinearLayoutManager(context)
+        parkingSpotsRecyclerView?.layoutManager = LinearLayoutManager(context)
 
-        adapter?.listener = object : HomepageActivity.OnItemClickListener {
+        adapter?.homepageListener = object : HomepageActivity.OnItemClickListener {
             override fun onItemClick(position: Int) {
-                Log.i("TAG", "ParkingLotsRecyclerAdapter: position clicked on: $position")
-                val parking = parkingLots?.get(position)
+                val parking = parkingSpots?.get(position)
                 parking?.let {
-                    val action = ParkingLotsFragmentDirections.actionParkingLotsFragmentToParkingFragment(it.address, it.city, it.avatar)
+                    val action = ParkingSpotsFragmentDirections.actionParkingSpotsFragmentToParkingFragment(it.address, it.city, it.avatar)
                     Navigation.findNavController(view).navigate(action)
                 }
             }
@@ -76,17 +73,17 @@ class ParkingLotsFragment : Fragment() {
             }
         }
 
-        parkingLotsRecyclerView?.adapter = adapter
+        parkingSpotsRecyclerView?.adapter = adapter
 
-        val addParkingButton: ImageButton = binding.btnParkingLotsFragmentAdd //view.findViewById(R.id.btnParkingLotsFragmentAdd)
-        val actionAdd = Navigation.createNavigateOnClickListener(R.id.action_parkingLotsFragment_to_addParkingFragment)
+        val addParkingButton: ImageButton = binding.btnParkingSpotsFragmentAdd
+        val actionAdd = Navigation.createNavigateOnClickListener(R.id.action_parkingSpotsFragment_to_addParkingFragment)
         addParkingButton.setOnClickListener(actionAdd)
 
         return view
     }
 
     private fun updateEmptyViewVisibility() {
-        if (this.parkingLots?.isEmpty() == true) {
+        if (this.parkingSpots?.isEmpty() == true) {
             noParkingsTextView?.visibility = View.VISIBLE
         } else {
             noParkingsTextView?.visibility = View.GONE
@@ -96,9 +93,9 @@ class ParkingLotsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        Model.instance.getAllParkingLots { parkingLots ->
-            this.parkingLots = parkingLots
-            adapter?.parkingLots = parkingLots
+        Model.instance.getAllParkingSpots { parkingSpots ->
+            this.parkingSpots = parkingSpots
+            adapter?.parkingSpots = parkingSpots
             adapter?.notifyDataSetChanged()
 
             updateEmptyViewVisibility()

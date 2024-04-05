@@ -1,30 +1,24 @@
-package com.example.parkshare_new.modules.parkingLots.adapter
+package com.example.parkshare_new.modules.parkingSpots.adapter
 
 import android.app.AlertDialog
-import android.graphics.BitmapFactory
 import android.util.Log
 import android.view.View
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.parkshare_new.R
 import com.example.parkshare_new.HomepageActivity
 import com.example.parkshare_new.models.Model
 import com.example.parkshare_new.models.Parking
-import com.example.parkshare_new.modules.parkingLots.RemoveParkingFragment
+import com.example.parkshare_new.modules.userProfile.UserProfileFragment
 import com.example.parkshare_new.services.ImagesService
-import com.google.firebase.storage.FirebaseStorage
-import java.io.File
 
-class ParkingLotsViewHolder(
+class ParkingSpotsViewHolder(
     itemView: View,
-    val listener: HomepageActivity.OnItemClickListener?,
-    var parkingLots: List<Parking>?): RecyclerView.ViewHolder(itemView) {
+    val homepageListener: HomepageActivity.OnItemClickListener?,
+    val userProfileListener: UserProfileFragment.OnItemClickListener?,
+    var parkingSpots: List<Parking>?): RecyclerView.ViewHolder(itemView) {
 
     var parkingAddressTextView: TextView? = null
     var parkingCityTextView: TextView? = null
@@ -39,7 +33,7 @@ class ParkingLotsViewHolder(
         parkingCheckBox = itemView.findViewById(R.id.cbAvalibleParking)
 
         parkingCheckBox?.setOnClickListener {
-            parking = parkingLots?.get(adapterPosition)
+            parking = parkingSpots?.get(adapterPosition)
             parking?.isChecked = parkingCheckBox?.isChecked ?: false
 
             if (parking?.isChecked == true) {
@@ -48,9 +42,9 @@ class ParkingLotsViewHolder(
         }
 
         itemView.setOnClickListener {
-            Log.i("TAG", "ParkingLotsViewHolder: position clicked: $adapterPosition")
-            listener?.onItemClick(adapterPosition)
-            listener?.onParkingClicked(parking)
+            homepageListener?.onItemClick(adapterPosition)
+            homepageListener?.onParkingClicked(parking)
+            //TODO - add onclick userprofile listener
         }
     }
 

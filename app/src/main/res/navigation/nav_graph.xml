@@ -3,22 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    android:label="All Parking Lots"
-    app:startDestination="@id/parkingLotsFragment">
+    android:label="All Parking Spots"
+    app:startDestination="@id/parkingSpotsFragment">
 
     <fragment
-        android:id="@+id/parkingLotsFragment"
-        android:name="com.example.parkshare_new.modules.parkingLots.ParkingLotsFragment"
-        android:label="All Parking Lots"
-        tools:layout="@layout/fragment_parking_lots">
+        android:id="@+id/parkingSpotsFragment"
+        android:name="com.example.parkshare_new.modules.parkingSpots.ParkingSpotsFragment"
+        android:label="All Parking Spots"
+        tools:layout="@layout/fragment_parking_spots">
         <action
-            android:id="@+id/action_parkingLotsFragment_to_parkingFragment"
+            android:id="@+id/action_parkingSpotsFragment_to_parkingFragment"
             app:destination="@id/parkingFragment" />
         <action
-            android:id="@+id/action_parkingLotsFragment_to_userProfileFragment"
+            android:id="@+id/action_parkingSpotsFragment_to_userProfileFragment"
             app:destination="@id/userProfileFragment" />
         <action
-            android:id="@+id/action_parkingLotsFragment_to_addParkingFragment"
+            android:id="@+id/action_parkingSpotsFragment_to_addParkingFragment"
             app:destination="@id/addParkingFragment" />
     </fragment>
     <fragment
@@ -33,7 +33,7 @@
         tools:layout="@layout/fragment_user_profile" />
     <fragment
         android:id="@+id/parkingFragment"
-        android:name="com.example.parkshare_new.modules.parkingLots.ParkingFragment"
+        android:name="com.example.parkshare_new.modules.parkingSpots.ParkingFragment"
         android:label="Parking Details"
         tools:layout="@layout/fragment_parking">
         <argument
@@ -49,4 +49,23 @@
     <action
         android:id="@+id/action_global_userProfileFragment"
         app:destination="@id/userProfileFragment" />
+    <fragment
+        android:id="@+id/editUserProfileFragment"
+        android:name="com.example.parkshare_new.modules.userProfile.EditUserProfileFragment"
+        android:label="Edit Profile"
+        tools:layout="@layout/fragment_edit_user_profile" >
+<!--        <argument-->
+<!--            android:name="EMAIL"-->
+<!--            app:argType="string" />-->
+<!--        <argument-->
+<!--            android:name="USERNAME"-->
+<!--            app:argType="string" />-->
+<!--        <argument-->
+<!--            android:name="FAVE_CITY"-->
+<!--            app:argType="string" />-->
+<!--        <argument-->
+<!--            android:name="AVATAR"-->
+<!--            app:argType="string" />-->
+    </fragment>
+    <action android:id="@+id/action_global_editUserProfileFragment" app:destination="@id/editUserProfileFragment" />
 </navigation>

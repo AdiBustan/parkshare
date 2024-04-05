@@ -57,7 +57,7 @@ public class LoginActivity : AppCompatActivity(){
                     val user = auth.currentUser
                     lifecycleScope.launch(Dispatchers.IO)  {
                         val userDao = database!!.userDao()
-                        userDao.insertUser(LocalUser(email = email, timestamp = System.currentTimeMillis()))
+                        userDao.insertUser(LocalUser(email, "", "", "",System.currentTimeMillis()))
                     }
                     updateUI(user)
                 } else {

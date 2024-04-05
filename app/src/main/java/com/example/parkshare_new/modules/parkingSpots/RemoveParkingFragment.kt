@@ -1,4 +1,4 @@
-package com.example.parkshare_new.modules.parkingLots
+package com.example.parkshare_new.modules.parkingSpots
 
 import android.app.AlertDialog
 import android.content.Context
