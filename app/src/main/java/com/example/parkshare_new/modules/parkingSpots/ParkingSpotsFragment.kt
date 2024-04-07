@@ -1,7 +1,6 @@
 package com.example.parkshare_new.modules.parkingSpots
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +12,9 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.parkshare_new.R
-import com.example.parkshare_new.HomepageActivity
+import com.example.parkshare_new.modules.HomepageActivity
 import com.example.parkshare_new.databinding.FragmentParkingSpotsBinding
-import com.example.parkshare_new.models.Model
+import com.example.parkshare_new.models.ParkingSpotModel
 import com.example.parkshare_new.models.Parking
 import com.example.parkshare_new.modules.parkingSpots.adapter.ParkingSpotsRecyclerAdapter
 
@@ -44,7 +43,7 @@ class ParkingSpotsFragment : Fragment() {
         progressBar?.visibility = View.VISIBLE
 
 
-        Model.instance.getAllParkingSpots { parkingSpots ->
+        ParkingSpotModel.instance.getAllParkingSpots { parkingSpots ->
             this.parkingSpots = parkingSpots
             adapter?.parkingSpots = parkingSpots
             adapter?.notifyDataSetChanged()
@@ -59,17 +58,13 @@ class ParkingSpotsFragment : Fragment() {
         //set the layout manager and adapter
         parkingSpotsRecyclerView?.layoutManager = LinearLayoutManager(context)
 
-        adapter?.homepageListener = object : HomepageActivity.OnItemClickListener {
+        adapter?.listener = object : HomepageActivity.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val parking = parkingSpots?.get(position)
                 parking?.let {
                     val action = ParkingSpotsFragmentDirections.actionParkingSpotsFragmentToParkingFragment(it.address, it.city, it.avatar)
                     Navigation.findNavController(view).navigate(action)
                 }
-            }
-
-            override fun onParkingClicked(parking: Parking?) {
-                Log.i("TAG", "PARKING: $parking")
             }
         }
 
@@ -93,7 +88,7 @@ class ParkingSpotsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        Model.instance.getAllParkingSpots { parkingSpots ->
+        ParkingSpotModel.instance.getAllParkingSpots { parkingSpots ->
             this.parkingSpots = parkingSpots
             adapter?.parkingSpots = parkingSpots
             adapter?.notifyDataSetChanged()

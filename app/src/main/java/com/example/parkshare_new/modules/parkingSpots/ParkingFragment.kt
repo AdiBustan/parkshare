@@ -43,7 +43,7 @@ class ParkingFragment : Fragment() {
 
         addressTextView?.text = address
         cityTextView?.text = city
-        ImagesService.loadingImageFromStorage(requireContext(), avatarImageView, avatar)
+        ImagesService.loadingImageFromStorage(avatarImageView, avatar)
 
         return view
     }

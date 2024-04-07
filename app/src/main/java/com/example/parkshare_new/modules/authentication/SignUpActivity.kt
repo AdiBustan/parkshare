@@ -1,37 +1,34 @@
-package com.example.parkshare_new.modules.signUp;
+package com.example.parkshare_new.modules.authentication;
 
 import android.app.Activity
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.example.parkshare_new.HomepageActivity
+import com.example.parkshare_new.modules.HomepageActivity
 import com.example.parkshare_new.dao.UserDao
 import com.example.parkshare_new.dao.UserDatabase
 import com.example.parkshare_new.databinding.ActivitySignupBinding
 import com.example.parkshare_new.models.LocalUser
-import com.example.parkshare_new.models.Model
 import com.example.parkshare_new.models.Profile
-import com.example.parkshare_new.modules.addParking.AddParkingFragment
+import com.example.parkshare_new.models.UserModel
+import com.example.parkshare_new.modules.parkingSpots.AddParkingFragment
+import com.example.parkshare_new.services.DialogService
 import com.example.parkshare_new.services.ImagesService
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-public class signUpActivity : AppCompatActivity() {
+class signUpActivity : AppCompatActivity() {
 
     var nameTextField: TextInputLayout? = null
     var faveCityTextField: TextInputLayout? = null
@@ -43,6 +40,7 @@ public class signUpActivity : AppCompatActivity() {
     var cancelButton: Button? = null
 
     var email: String = ""
+    var password: String = ""
     var username: String = ""
     var faveCity: String = ""
     var avatar: String = ""
@@ -83,15 +81,16 @@ public class signUpActivity : AppCompatActivity() {
 
         saveButton?.setOnClickListener {
             email = emailField?.editText?.text.toString()
+            password = passwordField?.editText?.text.toString()
             username = nameTextField?.editText?.text.toString()
             faveCity = faveCityTextField?.editText?.text.toString()
 
-            if (selectedImageURI != null) {
+            if (email.isNotEmpty() && username.isNotEmpty() && faveCity.isNotEmpty() && selectedImageURI != null && password.isNotEmpty()) {
                 avatar = ImagesService.uploadImageToStorage(selectedImageURI!!)
+                createAccount()
+            } else {
+                DialogService.showMissingDetailsDialog(this)
             }
-
-            createAccount(passwordField?.editText?.text.toString())
-            saveToFireStore()
         }
 
         cancelButton?.setOnClickListener {
@@ -99,37 +98,24 @@ public class signUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun createAccount(password : String) {
-
-        // Sign Up
+    private fun createAccount() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "createUserWithEmail:success")
-                    val user = auth.currentUser
-
                     lifecycleScope.launch(Dispatchers.IO) {
-                        Log.i("LocalStorage", "Start to save new user on local data")
                         userDao!!.insertUser(LocalUser(email, username, faveCity, avatar, System.currentTimeMillis()))
-                        Log.i("LocalStorage", "save local user successfully, email: $email")
+                        saveToFireStore()
                     }
 
                 } else {
-                    // If sign up fails, display a message to the user.
-                    Log.w("EmailPassword", "createUserWithEmail:failure", task.exception)
-                    Toast.makeText(
-                        baseContext,
-                        "Authentication failed.",
-                        Toast.LENGTH_SHORT,
-                    ).show()
+                    Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
                 }
             }
     }
 
     private fun saveToFireStore() {
         val profile = Profile(email, username, faveCity, avatar, listOf())
-        Model.instance.addUser(profile) {
+        UserModel.instance.addUser(profile) {
             val intent = Intent(this, HomepageActivity::class.java)
             startActivity(intent)
         }

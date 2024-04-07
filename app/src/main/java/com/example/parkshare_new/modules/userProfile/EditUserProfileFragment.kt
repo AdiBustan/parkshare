@@ -14,26 +14,17 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
-import com.example.parkshare_new.HomepageActivity
-import com.example.parkshare_new.R
 import com.example.parkshare_new.dao.UserDao
 import com.example.parkshare_new.dao.UserDatabase
-import com.example.parkshare_new.databinding.ActivitySignupBinding
 import com.example.parkshare_new.databinding.FragmentEditUserProfileBinding
 import com.example.parkshare_new.models.LocalUser
-import com.example.parkshare_new.models.Model
 import com.example.parkshare_new.models.Profile
-import com.example.parkshare_new.modules.addParking.AddParkingFragment
-import com.example.parkshare_new.modules.parkingSpots.ParkingFragmentArgs
-import com.example.parkshare_new.modules.parkingSpots.ParkingFragmentArgs.Companion.fromBundle
-//import com.example.parkshare_new.modules.userProfile.EditUserProfileFragmentArgs.Companion.fromBundle
+import com.example.parkshare_new.models.UserModel
+import com.example.parkshare_new.modules.parkingSpots.AddParkingFragment
+import com.example.parkshare_new.services.DialogService
 import com.example.parkshare_new.services.ImagesService
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -47,10 +38,11 @@ class EditUserProfileFragment : Fragment() {
     var updateImageButton: Button? = null
     var saveButton: Button? = null
     var cancelButton: Button? = null
-    //var args: EditUserProfileFragmentArgs? = null
+    var args: EditUserProfileFragmentArgs? = null
     private var selectedImageURI: Uri? = null
 
     private var database: UserDatabase? = null
+    private var userDao: UserDao? = null
     private var currUser: LocalUser? = null
     private lateinit var binding: FragmentEditUserProfileBinding
 
@@ -70,17 +62,16 @@ class EditUserProfileFragment : Fragment() {
         faveCityTextField = binding.ptCityEditProfile
         avatarImageView = binding.imAvatarEditProfile
 
-//        args = arguments?.let {
-//            EditUserProfileFragmentArgs.fromBundle(it)
-//        }
+        args = arguments?.let {
+            EditUserProfileFragmentArgs.fromBundle(it)
+        }
 
         database = UserDatabase.getInstance(requireContext().applicationContext)
         lifecycleScope.launch(Dispatchers.IO)  {
-            val userDao = database!!.userDao()
-            currUser = userDao.getUser()
+            userDao = database!!.userDao()
+            currUser = userDao!!.getUser()
 
             withContext(Dispatchers.Main) {
-                // Call setupUI() after currUser is retrieved and logged
                 setupUI()
             }
         }
@@ -89,9 +80,9 @@ class EditUserProfileFragment : Fragment() {
     }
 
     private fun setupUI() {
-//        nameTextField!!.hint = args!!.USERNAME
-//        faveCityTextField!!.hint = args!!.FAVECITY
-//        ImagesService.loadingImageFromStorage(requireContext(), avatarImageView!!, args!!.AVATAR)
+        nameTextField!!.editText?.setText(args!!.USERNAME)
+        faveCityTextField!!.editText?.setText(args!!.FAVECITY)
+        ImagesService.loadingImageFromStorage(avatarImageView!!, args!!.AVATAR)
 
         updateImageButton = binding.btnUploadImageEditProfile
         saveButton = binding.btnSaveEditProfile
@@ -105,12 +96,20 @@ class EditUserProfileFragment : Fragment() {
         saveButton?.setOnClickListener {
             val name = nameTextField?.editText?.text.toString()
             val city = faveCityTextField?.editText?.text.toString()
-
-            var avatar = ""
+            var avatar = args!!.AVATAR
             if (selectedImageURI != null) {
                 avatar = ImagesService.uploadImageToStorage(selectedImageURI!!)
             }
-            //saveToFireStore(args!!.EMAIL, name, city, avatar)
+
+            if (name.isNotEmpty() && city.isNotEmpty() && avatar != "") {
+                lifecycleScope.launch(Dispatchers.IO)  {
+                    userDao!!.updateUser(LocalUser(args!!.EMAIL, name, city, avatar, System.currentTimeMillis()))
+                }
+                saveToFireStore(args!!.EMAIL, name, city, avatar)
+
+            } else {
+                DialogService.showMissingDetailsDialog(context)
+            }
 
         }
 
@@ -122,7 +121,7 @@ class EditUserProfileFragment : Fragment() {
 
     private fun saveToFireStore(email: String, username: String, faveCity: String, avatar: String) {
         val profile = Profile(email, username, faveCity, avatar, listOf())
-        Model.instance.updateUserDetails(profile) {
+        UserModel.instance.updateUserDetails(profile) {
             view?.let { Navigation.findNavController(it).popBackStack() }
         }
     }

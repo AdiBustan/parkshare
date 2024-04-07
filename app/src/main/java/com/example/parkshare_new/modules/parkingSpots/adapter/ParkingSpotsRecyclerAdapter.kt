@@ -4,17 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.parkshare_new.R
-import com.example.parkshare_new.HomepageActivity
+import com.example.parkshare_new.modules.HomepageActivity
 import com.example.parkshare_new.models.Parking
-import com.example.parkshare_new.modules.userProfile.UserProfileFragment
 
 class ParkingSpotsRecyclerAdapter(var parkingSpots: List<Parking>?): RecyclerView.Adapter<ParkingSpotsViewHolder> () {
-    var homepageListener: HomepageActivity.OnItemClickListener? = null
-    var userProfileListener: UserProfileFragment.OnItemClickListener? = null
+    var listener: HomepageActivity.OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParkingSpotsViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.parking_list_row, parent, false)
-        return ParkingSpotsViewHolder(itemView, homepageListener, userProfileListener, parkingSpots)
+        return ParkingSpotsViewHolder(itemView, listener, parkingSpots)
     }
 
     override fun getItemCount(): Int {

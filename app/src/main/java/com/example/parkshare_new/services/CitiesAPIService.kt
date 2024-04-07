@@ -1,7 +1,6 @@
 package com.example.parkshare_new.services
 
 import android.content.Context
-import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import kotlinx.coroutines.Dispatchers
@@ -10,24 +9,20 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
-import kotlin.math.log
 
 class CitiesAPIService {
 
     companion object {
 
-        fun fetchCitiesInIsraelFromAPI(context: Context, citySpinner: Spinner) {
+        fun fetchCitiesInIsraelFromAPI(context: Context, citySpinner: Spinner, defaultVal: String) {
             GlobalScope.launch(Dispatchers.IO) {
                 val url = URL("https://countriesnow.space/api/v0.1/countries")
                 val connection = url.openConnection() as HttpURLConnection
                 val response = StringBuilder()
-                Log.i("RES_CODE", connection.responseCode.toString() + ", " + connection.responseMessage.toString())
                 try {
                     val reader = BufferedReader(InputStreamReader(connection.inputStream))
                     var line: String?
@@ -39,9 +34,8 @@ class CitiesAPIService {
                     connection.disconnect()
                 }
 
-                Log.i("TAG", response.toString())
                 // Parse JSON response to extract the list of cities
-                val cities = parseCitiesFromJSON(response.toString())
+                val cities = parseCitiesFromJSON(response.toString(), defaultVal)
 
                 // Update UI with the list of cities
                 withContext(Dispatchers.Main) {
@@ -50,9 +44,9 @@ class CitiesAPIService {
             }
         }
 
-        private fun parseCitiesFromJSON(json: String): List<String> {
+        private fun parseCitiesFromJSON(json: String, defaultVal: String): List<String> {
             val cities = mutableListOf<String>()
-            cities.add("City")
+            cities.add(defaultVal)
 
             val allJsonObject = JSONObject(json)
             val jsonArray = JSONArray(allJsonObject.get("data").toString())
@@ -79,7 +73,4 @@ class CitiesAPIService {
             citySpinner.adapter = adapter
         }
     }
-
-
-
 }

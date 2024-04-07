@@ -3,9 +3,7 @@ package com.example.parkshare_new.services
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-import android.view.View
 import android.widget.ImageView
-import com.bumptech.glide.Glide
 import com.example.parkshare_new.R
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
@@ -18,7 +16,7 @@ class ImagesService {
 
     companion object {
 
-        fun loadingImageFromStorage(context: Context, imageView: ImageView, imageName: String?) {
+        fun loadingImageFromStorage(imageView: ImageView, imageName: String?) {
             if (imageName?.isNotEmpty() == true) {
                 val storageReference = FirebaseStorage.getInstance().reference.child("/images/$imageName")
 

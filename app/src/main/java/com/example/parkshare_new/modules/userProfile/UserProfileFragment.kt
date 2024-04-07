@@ -1,7 +1,6 @@
 package com.example.parkshare_new.modules.userProfile
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
@@ -11,16 +10,17 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.parkshare_new.modules.HomepageActivity
 import com.example.parkshare_new.R
 import com.example.parkshare_new.dao.UserDao
 import com.example.parkshare_new.dao.UserDatabase
 import com.example.parkshare_new.databinding.FragmentUserProfileBinding
 import com.example.parkshare_new.models.LocalUser
-import com.example.parkshare_new.models.Model
 import com.example.parkshare_new.models.Parking
-import com.example.parkshare_new.models.Profile
+import com.example.parkshare_new.models.UserModel
 import com.example.parkshare_new.modules.parkingSpots.adapter.ParkingSpotsRecyclerAdapter
 import com.example.parkshare_new.services.ImagesService
 import kotlinx.coroutines.Dispatchers
@@ -43,11 +43,6 @@ class UserProfileFragment : Fragment() {
     private var _binding: FragmentUserProfileBinding? = null
     private val binding get() = _binding!!
 
-
-    interface OnItemClickListener {
-        fun onParkingClick(parking: Parking?)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -68,7 +63,6 @@ class UserProfileFragment : Fragment() {
             currUser = userDao!!.getUser()
 
             withContext(Dispatchers.Main) {
-                // Call setupUI() after currUser is retrieved and logged
                 setupUI()
             }
         }
@@ -78,9 +72,13 @@ class UserProfileFragment : Fragment() {
 
         userParkingSpotsRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
 
-        adapter?.userProfileListener = object : OnItemClickListener {
-            override fun onParkingClick(parking: Parking?) {
-                Log.i("TAG", "PARKING: $parking")
+        adapter?.listener = object : HomepageActivity.OnItemClickListener {
+            override fun onItemClick(position: Int) {
+                val parking = userParkingSpots?.get(position)
+                parking?.let {
+                    val action = UserProfileFragmentDirections.actionUserProfileFragmentToEditParkingSpotFragment(it.address, it.city, it.avatar, currUser!!.email, it.timestamp)
+                    Navigation.findNavController(view).navigate(action)
+                }
             }
         }
 
@@ -104,27 +102,17 @@ class UserProfileFragment : Fragment() {
         getUserParkingSpots()
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        var profileBtn = menu.findItem(R.id.miActionBarProfile)
-        var editBtn = menu.findItem(R.id.miActionBarEditProfile)
 
-        profileBtn.isVisible = false
-        editBtn.isVisible = true
-
-        //menu.clear()
-        super.onCreateOptionsMenu(menu, inflater)
-    }
 
     private fun updateUI(username: String, faveCity: String, avatar: String) {
         usernameTextView?.text = username
         faveCityTextView?.text = faveCity
-        ImagesService.loadingImageFromStorage(requireContext(), avatarImageView!!, avatar)
+        ImagesService.loadingImageFromStorage(avatarImageView!!, avatar)
 
     }
 
     private fun getUserDetailsFromFirebase() {
-        Model.instance.getUserByEmail(currUser!!.email) {profile ->
+        UserModel.instance.getUserByEmail(currUser!!.email) {profile ->
             val localUser = LocalUser(profile!!.email, profile.userName, profile.faveCity, profile.avatar, System.currentTimeMillis())
 
             lifecycleScope.launch(Dispatchers.IO)  {
@@ -136,10 +124,22 @@ class UserProfileFragment : Fragment() {
     }
 
     private fun getUserParkingSpots() {
-        Model.instance.getAllParkingSpotsPerUser(this.currUser!!.email) { parkingSpotsPerUser ->
+        UserModel.instance.getAllParkingSpotsByUser(this.currUser!!.email) { parkingSpotsPerUser ->
             this.userParkingSpots = parkingSpotsPerUser
             adapter?.parkingSpots = parkingSpotsPerUser
             adapter?.notifyDataSetChanged()
         }
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        var profileBtn = menu.findItem(R.id.miActionBarProfile)
+        var editBtn = menu.findItem(R.id.miActionBarEditProfile)
+
+        profileBtn.isVisible = false
+        editBtn.isVisible = true
+
+        //menu.clear()
+        super.onCreateOptionsMenu(menu, inflater)
     }
 }

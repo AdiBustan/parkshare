@@ -1,7 +1,6 @@
-package com.example.parkshare_new.modules.addParking
+package com.example.parkshare_new.modules.parkingSpots
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -20,9 +19,10 @@ import com.example.parkshare_new.R
 import com.example.parkshare_new.dao.UserDatabase
 import com.example.parkshare_new.databinding.FragmentAddParkingBinding
 import com.example.parkshare_new.models.LocalUser
-import com.example.parkshare_new.models.Model
+import com.example.parkshare_new.models.ParkingSpotModel
 import com.example.parkshare_new.models.Parking
 import com.example.parkshare_new.services.CitiesAPIService
+import com.example.parkshare_new.services.DialogService
 import com.example.parkshare_new.services.ImagesService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -40,7 +40,6 @@ class AddParkingFragment : Fragment() {
     private var selectedImageURI: Uri? = null
     private var _binding: FragmentAddParkingBinding? = null
     private var chosenCity: String? = ""
-
     private var database: UserDatabase? = null
     private var currUser: LocalUser? = null
 
@@ -54,10 +53,9 @@ class AddParkingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        // Inflate the layout for this fragment
         _binding = FragmentAddParkingBinding.inflate(inflater, container, false)
         val view = binding.root
+
         database = UserDatabase.getInstance(requireContext().applicationContext)
         lifecycleScope.launch(Dispatchers.IO)  {
             val userDao = database!!.userDao()
@@ -77,7 +75,7 @@ class AddParkingFragment : Fragment() {
         saveButton = binding.btnSaveAddParking
         cancelButton = binding.btnCancelAddParking
 
-        CitiesAPIService.fetchCitiesInIsraelFromAPI(requireContext(), citySpinnerField!!)
+        CitiesAPIService.fetchCitiesInIsraelFromAPI(requireContext(), citySpinnerField!!, "City")
 
         uploadImageButton?.setOnClickListener {
             val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -86,52 +84,30 @@ class AddParkingFragment : Fragment() {
 
         citySpinnerField!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                // Retrieve the selected item from the spinner
                 chosenCity = parent?.getItemAtPosition(position).toString()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("Not yet implemented")
             }
         }
 
         saveButton?.setOnClickListener {
             val address = addressTextField?.editText?.text
 
-            var avatar = ""
-            if (selectedImageURI != null) {
-                avatar = ImagesService.uploadImageToStorage(selectedImageURI!!)
-            }
-
-            if (address?.isNotEmpty() == true && chosenCity != "") {
-                val parking = Parking(address.toString(), avatar, chosenCity!!, currUser!!.email, false, false, System.currentTimeMillis())
-                Model.instance.addParking(parking) {
+            if (address?.isNotEmpty() == true && chosenCity != "" && selectedImageURI != null) {
+                val avatar = ImagesService.uploadImageToStorage(selectedImageURI!!)
+                val parking = Parking( System.currentTimeMillis(), address.toString(), avatar, chosenCity!!, currUser!!.email, false, false)
+                ParkingSpotModel.instance.addParking(parking) {
                     Navigation.findNavController(it).popBackStack(R.id.parkingSpotsFragment, false)
                 }
             } else {
-                val errorMessage = if (address?.isNotEmpty() == true) { "city name" }
-                                else if (chosenCity?.isNotEmpty() ==  true) { "address" }
-                                else { "address and city name" }
-                showErrorParkingSpotDialog(errorMessage)
+                DialogService.showMissingDetailsDialog(context)
             }
         }
 
         cancelButton?.setOnClickListener {
             Navigation.findNavController(it).popBackStack()
         }
-    }
-
-    private fun showErrorParkingSpotDialog(textMessage: String) {
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle("Error saving your parking spot")
-            .setMessage("Please enter $textMessage")
-
-        builder.setPositiveButton("OK") { dialog, _ ->
-            dialog.dismiss()
-        }
-
-        val alertDialog: AlertDialog = builder.create()
-        alertDialog.show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

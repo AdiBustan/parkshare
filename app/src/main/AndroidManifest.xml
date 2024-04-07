@@ -19,11 +19,11 @@
         android:theme="@style/Theme.Parksharenew"
         tools:targetApi="31">
         <activity
-            android:name=".HomepageActivity"
+            android:name=".modules.HomepageActivity"
             android:exported="true" >
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".modules.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,11 +32,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".modules.signUp.signUpActivity"
+            android:name=".modules.authentication.signUpActivity"
             android:exported="false">
         </activity>
         <activity
-            android:name=".modules.login.LoginActivity"
+            android:name=".modules.authentication.LoginActivity"
             android:exported="false">
         </activity>
     </application>

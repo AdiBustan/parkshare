@@ -1,10 +1,9 @@
-package com.example.parkshare_new
+package com.example.parkshare_new.modules
 
 import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.lifecycle.lifecycleScope
@@ -15,11 +14,7 @@ import com.example.parkshare_new.R
 import com.example.parkshare_new.dao.UserDao
 import com.example.parkshare_new.dao.UserDatabase
 import com.example.parkshare_new.databinding.ActivityHomepageBinding
-import com.example.parkshare_new.databinding.ActivityMainBinding
-import com.example.parkshare_new.models.FirebaseModel
 import com.example.parkshare_new.models.LocalUser
-import com.example.parkshare_new.models.Model
-import com.example.parkshare_new.models.Parking
 import com.example.parkshare_new.modules.userProfile.EditUserProfileFragmentDirections
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -68,25 +63,32 @@ class HomepageActivity : AppCompatActivity() {
             android.R.id.home -> {
                 navController?.popBackStack()
             }
+
             R.id.miActionLogout -> {
-                userLogoutConfirmation()
+                isLogoutConfirm()
             }
+
             R.id.miActionBarProfile -> {
                 navController?.navigate(R.id.action_global_userProfileFragment)
             }
-            R.id.miActionBarEditProfile -> {
 
-                //TODO: send the arguments of the curr user
-//                val action = EditUserProfileFragmentDirections.actionGlobalEditUserProfileFragment(
-//                    , "user@example.com"
-//                )
-                navController?.navigate(R.id.action_global_editUserProfileFragment)
+            R.id.miActionBarEditProfile -> {
+                lifecycleScope.launch(Dispatchers.IO)  {
+                    currUser = userDao!!.getUser()
+
+                    withContext(Dispatchers.Main) {
+                        val action = EditUserProfileFragmentDirections.actionGlobalEditUserProfileFragment(
+                            currUser!!.email, currUser!!.username, currUser!!.faveCity, currUser!!.avatar)
+
+                        navController?.navigate(action)
+                    }
+                }
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun userLogoutConfirmation() {
+    fun isLogoutConfirm() {
         val builder = AlertDialog.Builder(this)
         builder.setMessage("Are you sure you want to logout?")
 
@@ -112,6 +114,5 @@ class HomepageActivity : AppCompatActivity() {
 
     interface OnItemClickListener {
         fun onItemClick(position: Int)
-        fun onParkingClicked(parking: Parking?)
     }
 }
