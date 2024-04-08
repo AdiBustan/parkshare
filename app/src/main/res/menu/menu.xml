@@ -7,4 +7,15 @@
         android:icon="@drawable/icons8_user_96"
         android:title="profile"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/miActionLogout"
+        android:icon="@drawable/icons8_logout_96"
+        android:title="profile"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/miActionBarEditProfile"
+        android:icon="@drawable/icons8_edit_96"
+        android:visible="false"
+        android:title="profile"
+        app:showAsAction="always" />
 </menu>

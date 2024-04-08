@@ -1,17 +1,12 @@
-package com.example.parkshare_new.modules.parkingLots
+package com.example.parkshare_new.modules.parkingSpots
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.navigation.Navigation
-import com.bumptech.glide.Glide
-import com.example.parkshare_new.R
 import com.example.parkshare_new.databinding.FragmentParkingBinding
 import com.example.parkshare_new.services.ImagesService
 
@@ -48,12 +43,8 @@ class ParkingFragment : Fragment() {
 
         addressTextView?.text = address
         cityTextView?.text = city
-        ImagesService.loadingImageFromStorage(requireContext(), avatarImageView, avatar)
-//        Glide.with(requireContext())
-//            .load(avatar)
-//            .placeholder(R.drawable.loading)
-//            .error(R.drawable.loading)
-//            .into(avatarImageView)
+        ImagesService.loadingImageFromStorage(avatarImageView, avatar)
+
         return view
     }
 
